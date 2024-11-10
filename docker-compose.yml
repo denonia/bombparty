@@ -1,0 +1,11 @@
+services:
+  bombparty:
+    container_name: bombparty
+    image: bombparty
+    ports:
+      - 5001:8080
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./dict/english.txt:/app/english.txt

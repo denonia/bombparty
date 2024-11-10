@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="BombParty.Views.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BombParty.Views" xmlns:controls="clr-namespace:BombParty.Controls" xmlns:converters="clr-namespace:BombParty.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Border BorderBrush="Black" BorderThickness="0.5,0.5,0,0.5" Padding="10">
+                <ItemsControl ItemsSource="{Binding Players}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <ItemContainerTemplate>
+                            <Grid>
+                                <controls:AnswerIndicator IsShown="{Binding IsRed}" Fill="Red" />
+                                <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="Green" />
+
+                                <StackPanel Width="100" Margin="10">
+                                    <Image Source="{StaticResource Avatar}" Width="100" />
+                                    <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Input}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding HealthPoints}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="^^^^^^" Visibility="{Binding IsTurn, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </ItemContainerTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <StackPanel Margin="5">
+                <TextBlock Text="{Binding CurrentCombination}" FontSize="24" HorizontalAlignment="Center"/>
+
+                <Image Source="{StaticResource Bomb}" Width="100"/>
+                <ProgressBar Foreground="DarkRed"  Margin="3" Width="200" Height="10" Value="{Binding RoundProgress, Mode=OneWay}"/>
+
+                <TextBox Margin="3" Width="200" 
+                         IsEnabled="{Binding IsTurn}"
+                         Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SubmitAnswerCommand}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" Width="60" Margin="0 5"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0.5" Padding="10">
+            <StackPanel>
+                <controls:ChatTextBox Text="{Binding ChatHistory}" Height="200" />
+
+                <TextBox Width="200" Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 10">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Content="Send" Command="{Binding SendChatMessageCommand}" Width="60" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,15 @@
+﻿<Application x:Class="BombParty.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BombParty">
+    <Application.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="Avatar" UriSource="Images\goofy.png" />
+            <BitmapImage x:Key="Bomb" UriSource="Images\bomb.png" />
+
+            <Style TargetType="Image">
+                <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
