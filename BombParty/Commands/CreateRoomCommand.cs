@@ -28,11 +28,11 @@ namespace BombParty.Commands
                 Password = _viewModel.Password,
                 Settings = new RoomSettings
                 {
+                    Language = _viewModel.Language.Value,
                     StartHealthPoints = _viewModel.StartHealthPoints,
                     RoundTime = _viewModel.RoundTime
                 }
             };
-
 
             _gameService.OnJoinRoomResult += OnReceiveJoinResult;
             _gameService.CreateRoom(dto).Wait();

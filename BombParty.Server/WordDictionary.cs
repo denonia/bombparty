@@ -1,17 +1,29 @@
-﻿namespace BombParty.Server
+﻿using BombParty.Common.Enums;
+using System.Reflection;
+using System.Resources;
+
+namespace BombParty.Server
 {
     public class WordDictionary
     {
+        // TODO: load these only once
         private string[] _words;
 
-        public WordDictionary(string[] words)
+        public WordDictionary(DictionaryLanguage language)
         {
-            _words = words;
-        }
+            var rm = new ResourceManager("BombParty.Server.Properties.Resources", Assembly.GetExecutingAssembly());
 
-        public WordDictionary(string path)
-        {
-            _words = File.ReadAllLines(path);
+            var dictionaryName = language switch
+            { 
+                DictionaryLanguage.English => "English",
+                DictionaryLanguage.Ukrainian => "Ukrainian",
+
+                _ => "English"
+            };
+
+            var dictionaryText = (string)rm.GetObject(dictionaryName)!;
+
+            _words = dictionaryText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
         }
 
         public bool Contains(string word) => _words.Contains(word);

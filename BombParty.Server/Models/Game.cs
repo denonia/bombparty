@@ -1,4 +1,5 @@
 ﻿using BombParty.Common;
+using BombParty.Common.Enums;
 using System.Timers;
 
 namespace BombParty.Server.Models
@@ -19,7 +20,7 @@ namespace BombParty.Server.Models
             Room = room;
             Settings = settings;
 
-            _dictionary = new WordDictionary("english.txt");
+            _dictionary = new WordDictionary(settings.Language);
 
             _timeoutTimer.Elapsed += new ElapsedEventHandler(OnRoundTimeout);
         }
