@@ -23,13 +23,16 @@ namespace BombParty.Commands
 
         public override void Execute(object? parameter)
         {
-            var newSettings = new PlayerSettings
+            var newPlayerSettings = new PlayerSettings
             {
                 UserName = _viewModel.Name
             };
 
+            var newSettings = _settingsStore.Settings;
+            newSettings.PlayerSettings = newPlayerSettings;
             _settingsStore.Settings = newSettings;
-            _gameService.UpdateSettings(newSettings).ConfigureAwait(false);
+
+            _gameService.UpdateSettings(newPlayerSettings).ConfigureAwait(false);
             _lobbyNavService.Navigate();
         }
     }

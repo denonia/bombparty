@@ -20,7 +20,7 @@ namespace BombParty.ViewModels
             NavigationService<GameViewModel> gameNavService)
         {
             _settingsStore = settingsStore;
-            _name = (settingsStore.Settings.UserName ?? gameService.ConnectionId) + "'s game";
+            _name = (settingsStore.Settings.PlayerSettings.UserName ?? gameService.ConnectionId) + "'s game";
 
             BackCommand = new NavigateCommand<LobbyViewModel>(lobbyNavService);
             SubmitCommand = new CreateRoomCommand(this, gameService, gameNavService);

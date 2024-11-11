@@ -1,8 +1,6 @@
-﻿using BombParty.Common;
-using BombParty.Extensions;
+﻿using BombParty.Extensions;
 using BombParty.Services;
 using BombParty.ViewModels;
-using BombParty.ViewModels.Game;
 using BombParty.ViewModels.Lobby;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -18,14 +16,9 @@ namespace BombParty
         {
             var services = new ServiceCollection()
                 .AddSingleton(SynchronizationContext.Current!)
-                .AddSingleton<SettingsStore>()
-                .AddSingleton<NavigationStore>()
-                .AddSingleton<GameService>()
-                .AddViewModel<MainViewModel>()
-                .AddViewModel<LobbyViewModel>()
-                .AddViewModel<SettingsViewModel>()
-                .AddViewModel<CreateRoomViewModel>()
-                .AddViewModel<GameViewModel>()
+                .AddStores()
+                .AddServices()
+                .AddViewModels()
                 .BuildServiceProvider();
 
             services.GetRequiredService<NavigationService<LobbyViewModel>>().Navigate();
@@ -33,11 +26,8 @@ namespace BombParty
             var gameService = services.GetRequiredService<GameService>();
             gameService.ConnectAsync().ConfigureAwait(false);
 
-            var settings = new PlayerSettings
-            {
-                UserName = "user1"
-            };
-            gameService.UpdateSettings(settings).ConfigureAwait(false);
+            var settingsStore = services.GetRequiredService<SettingsStore>();
+            gameService.UpdateSettings(settingsStore.Settings.PlayerSettings).ConfigureAwait(false);
 
             var mainWindow = new MainWindow
             {

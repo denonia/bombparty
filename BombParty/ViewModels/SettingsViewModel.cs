@@ -14,7 +14,7 @@ namespace BombParty.ViewModels
         {
             SubmitCommand = new ChangeSettingsCommand(this, settingsStore, gameService, lobbyNavService);
 
-            _name = settingsStore.Settings.UserName ?? string.Empty;
+            _name = settingsStore.Settings.PlayerSettings.UserName ?? string.Empty;
         }
 
         public ICommand SubmitCommand { get; }

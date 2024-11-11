@@ -11,11 +11,10 @@ namespace BombParty.Services
 
         private List<Player> _players = new();
 
-        public GameService()
+        public GameService(SettingsStore settingsStore)
         {
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7173/game-hub")
-                //.WithUrl("http://167.86.97.101:5001/game-hub")
+                .WithUrl($"{settingsStore.Settings.ServerAddress}/game-hub")
                 .Build();
 
             RegisterHandlers();
