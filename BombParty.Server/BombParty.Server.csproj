@@ -9,11 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\English.txt.gz" />
+    <None Remove="Resources\Ukrainian.txt.gz" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.SignalR" Version="1.28.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BombParty.Common\BombParty.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\English.txt.gz" />
+    <EmbeddedResource Include="Resources\Ukrainian.txt.gz" />
   </ItemGroup>
 
 </Project>

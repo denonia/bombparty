@@ -7,7 +7,7 @@ namespace BombParty.Server.Models
     {
         private readonly List<Player> _players = new();
 
-        public Room(CreateRoomDto dto, Player owner)
+        public Room(CreateRoomDto dto, Player owner, WordDictionary dictionary)
         {
             OwnerId = owner.Id;
             Name = dto.Name;
@@ -16,7 +16,7 @@ namespace BombParty.Server.Models
 
             _players.Add(owner);
 
-            Game = new Game(this, _players, Settings);
+            Game = new Game(this, _players, Settings, dictionary);
             Game.OnRoundStart += OnGameRoundStart;
             Game.OnGameOver += OnGameGameOver;
             Game.OnHealthChanged += OnGameHealthChanged;

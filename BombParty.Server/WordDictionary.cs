@@ -6,24 +6,11 @@ namespace BombParty.Server
 {
     public class WordDictionary
     {
-        // TODO: load these only once
         private string[] _words;
 
-        public WordDictionary(DictionaryLanguage language)
+        public WordDictionary(string[] words)
         {
-            var rm = new ResourceManager("BombParty.Server.Properties.Resources", Assembly.GetExecutingAssembly());
-
-            var dictionaryName = language switch
-            { 
-                DictionaryLanguage.English => "English",
-                DictionaryLanguage.Ukrainian => "Ukrainian",
-
-                _ => "English"
-            };
-
-            var dictionaryText = (string)rm.GetObject(dictionaryName)!;
-
-            _words = dictionaryText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            _words = words;
         }
 
         public bool Contains(string word) => _words.Contains(word);

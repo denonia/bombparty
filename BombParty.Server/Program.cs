@@ -17,6 +17,7 @@ namespace BombParty.Server
             builder.Services.AddSingleton<IEventService, EventService>();
             builder.Services.AddSingleton<IRoomService, RoomService>();
             builder.Services.AddSingleton<IPlayerService, PlayerService>();
+            builder.Services.AddSingleton<IDictionaryService, DictionaryService>();
 
             var app = builder.Build();
 

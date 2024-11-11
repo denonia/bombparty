@@ -10,15 +10,18 @@ namespace BombParty.Server.Hubs
     {
         private readonly IPlayerService _playerService;
         private readonly IRoomService _roomService;
+        private readonly IDictionaryService _dictionaryService;
         private readonly ILogger<GameHub> _logger;
 
         public GameHub(
             IPlayerService playerService,
             IRoomService roomService,
+            IDictionaryService dictionaryService,
             ILogger<GameHub> logger, ILogger<Game> _gameLogger)
         {
             _playerService = playerService;
             _roomService = roomService;
+            _dictionaryService = dictionaryService;
             _logger = logger;
         }
 
@@ -82,7 +85,7 @@ namespace BombParty.Server.Hubs
             _logger.LogInformation("{} has created room {}", Context.ConnectionId, createRoomDto.Name);
 
             var owner = _playerService.GetPlayer(Context.ConnectionId);
-            var room = new Room(createRoomDto, owner);
+            var room = new Room(createRoomDto, owner, _dictionaryService.GetDictionary(createRoomDto.Settings.Language));
             _roomService.CreateRoom(room);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);

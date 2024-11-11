@@ -14,13 +14,13 @@ namespace BombParty.Server.Models
         string _currentCombination = string.Empty;
         System.Timers.Timer _timeoutTimer = new();
 
-        public Game(Room room, List<Player> players, RoomSettings settings)
+        public Game(Room room, List<Player> players, RoomSettings settings, WordDictionary dictionary)
         {
             _players = players;
             Room = room;
             Settings = settings;
 
-            _dictionary = new WordDictionary(settings.Language);
+            _dictionary = dictionary;
 
             _timeoutTimer.Elapsed += new ElapsedEventHandler(OnRoundTimeout);
         }
