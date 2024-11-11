@@ -2,6 +2,7 @@
 using BombParty.Common.Dtos;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Net.Http;
+using System.Windows;
 
 namespace BombParty.Services
 {
@@ -47,14 +48,22 @@ namespace BombParty.Services
             }
             catch (HttpRequestException)
             {
-                Console.WriteLine("Failed to connect to the server.");
+                MessageBox.Show("Failed to connect to the server.", "Error");
+                Environment.Exit(0);
             }
         }
 
         private void RegisterHandlers()
         {
             _hubConnection.On<IList<RoomDetailsDto>>("ActiveRooms", (roomDtos) => OnActiveRooms?.Invoke(roomDtos));
-            _hubConnection.On<bool>("JoinRoomResult", (success) => OnJoinRoomResult?.Invoke(success));
+
+            _hubConnection.On<bool, RoomSettings?>("JoinRoomResult", (success, roomSettings) =>
+            {
+                OnJoinRoomResult?.Invoke(success);
+
+                if (success && roomSettings.HasValue)
+                    RoomSettings = roomSettings.Value;
+            });
 
             _hubConnection.On<Player>("UserPresence", (player) =>
             {

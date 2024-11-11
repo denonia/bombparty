@@ -87,7 +87,7 @@ namespace BombParty.Server.Hubs
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
 
-            await Clients.Caller.JoinRoomResult(true);
+            await Clients.Caller.JoinRoomResult(true, room.Settings);
             await Clients.Caller.UserPresence(owner);
 
             await SendLobbyUpdate();
@@ -112,7 +112,7 @@ namespace BombParty.Server.Hubs
             if (joinSuccess)
                 await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
 
-            await Clients.Caller.JoinRoomResult(joinSuccess);
+            await Clients.Caller.JoinRoomResult(joinSuccess, room.Settings);
 
             foreach (var existingPlayer in room.Players)
             {

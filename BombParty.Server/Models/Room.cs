@@ -48,7 +48,7 @@ namespace BombParty.Server.Models
 
         public bool AuthenticatePlayer(Player player, string? password)
         {
-            if (!string.IsNullOrEmpty(password) && password != Password)
+            if (!string.IsNullOrEmpty(Password) && password != Password)
                 return false;
 
             player.HealthPoints = Game.Settings.StartHealthPoints;

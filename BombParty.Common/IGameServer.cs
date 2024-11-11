@@ -5,7 +5,7 @@ namespace BombParty.Common
     public interface IGameServer
     {
         Task ActiveRooms(IList<RoomDetailsDto> roomDtos);
-        Task JoinRoomResult(bool success);
+        Task JoinRoomResult(bool success, RoomSettings? roomSettings);
 
         Task UserPresence(Player player);
         Task UserJoined(Player player);
