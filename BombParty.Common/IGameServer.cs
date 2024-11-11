@@ -1,10 +1,14 @@
-﻿namespace BombParty.Common
+﻿using BombParty.Common.Dtos;
+
+namespace BombParty.Common
 {
     public interface IGameServer
     {
-        Task UserPresence(string id, string? userName, int healthPoints);
-        Task UserJoined(string id);
-        Task UserChangedName(string id, string userName);
+        Task ActiveRooms(IList<RoomDetailsDto> roomDtos);
+        Task JoinRoomResult(bool success);
+
+        Task UserPresence(Player player);
+        Task UserJoined(Player player);
         Task UserLeft(string id);
 
         Task RoundStart(string currentUserId, string currentCombination);

@@ -1,5 +1,5 @@
 ﻿using BombParty.Common;
-using BombParty.Server;
+using BombParty.Common.Dtos;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Net.Http;
 
@@ -15,23 +15,30 @@ namespace BombParty.Services
         {
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7173/game-hub")
+                //.WithUrl("http://167.86.97.101:5001/game-hub")
                 .Build();
 
             RegisterHandlers();
         }
 
+        public event Action<IList<RoomDetailsDto>>? OnActiveRooms;
+        public event Action<bool>? OnJoinRoomResult;
+        
+        public event Action<string, string?, int>? OnUserPresence;
+        public event Action<Player>? OnUserJoined;
+        public event Action<string>? OnUserLeft;
+
         public event Action<string, string>? OnRoundStart;
         public event Action? OnGameOver;
         public event Action<string, int>? OnHealthChanged;
-        public event Action<string, string>? OnChatMessage;
-        public event Action<string, string?, int>? OnUserPresence;
-        public event Action<string>? OnUserJoined;
-        public event Action<string>? OnUserLeft;
-        public event Action<string, string>? OnUserNameChanged;
+
         public event Action<string, string>? OnUserTyping;
         public event Action<string, string, bool>? OnAnswerSubmitted;
+        public event Action<string, string>? OnChatMessage;
 
         public string ConnectionId => _hubConnection.ConnectionId;
+
+        public RoomSettings RoomSettings { get; private set; } = new();
 
         public async Task ConnectAsync()
         {
@@ -47,26 +54,19 @@ namespace BombParty.Services
 
         private void RegisterHandlers()
         {
-            _hubConnection.On<string, string?, int>("UserPresence", (id, userName, healthPoints) =>
+            _hubConnection.On<IList<RoomDetailsDto>>("ActiveRooms", (roomDtos) => OnActiveRooms?.Invoke(roomDtos));
+            _hubConnection.On<bool>("JoinRoomResult", (success) => OnJoinRoomResult?.Invoke(success));
+
+            _hubConnection.On<Player>("UserPresence", (player) =>
             {
-                _players.Add(new Player(id)
-                {
-                    UserName = userName,
-                    HealthPoints = healthPoints
-                });
-                OnUserPresence?.Invoke(id, userName, healthPoints);
+                _players.Add(player);
+                OnUserPresence?.Invoke(player.Id, player.Settings.UserName, player.HealthPoints);
             });
 
-            _hubConnection.On<string>("UserJoined", (id) =>
+            _hubConnection.On<Player>("UserJoined", (player) =>
             {
-                _players.Add(new Player(id));
-                OnUserJoined?.Invoke(id);
-            });
-
-            _hubConnection.On<string, string>("UserChangedName", (id, newName) =>
-            {
-                GetPlayerById(id).UserName = newName;
-                OnUserNameChanged?.Invoke(id, newName);
+                _players.Add(player);
+                OnUserJoined?.Invoke(player);
             });
 
             _hubConnection.On<string>("UserLeft", (id) =>
@@ -109,6 +109,33 @@ namespace BombParty.Services
 
                 OnChatMessage?.Invoke(player.DisplayName, text);
             });
+        }
+
+        public async Task UpdateSettings(PlayerSettings playerSettings)
+        {
+            await _hubConnection.SendAsync("UpdateSettings", playerSettings);
+        }
+
+        public async Task RequestActiveRooms()
+        {
+            await _hubConnection.SendAsync("RequestActiveRooms");
+        }
+
+        public async Task CreateRoom(CreateRoomDto createRoomDto)
+        {
+            await _hubConnection.SendAsync("CreateRoom", createRoomDto);
+            _players.Clear();
+        }
+
+        public async Task JoinRoom(string roomId, string? password)
+        {
+            await _hubConnection.SendAsync("JoinRoom", roomId, password);
+            _players.Clear();
+        }
+
+        public async Task LeaveRoom()
+        {
+            await _hubConnection.SendAsync("LeaveRoom");
         }
 
         public async Task SendChatMessage(string text)

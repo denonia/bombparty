@@ -1,4 +1,6 @@
 ﻿using BombParty.Common;
+using BombParty.Common.Dtos;
+using BombParty.Server.Models;
 using BombParty.Server.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -6,80 +8,198 @@ namespace BombParty.Server.Hubs
 {
     public class GameHub : Hub<IGameServer>, IGameClient, IDisposable
     {
+        private readonly IPlayerService _playerService;
+        private readonly IRoomService _roomService;
         private readonly ILogger<GameHub> _logger;
-        private readonly Game _game;
 
-        public GameHub(Game game, ILogger<GameHub> logger, ILogger<Game> _gameLogger)
+        public GameHub(
+            IPlayerService playerService,
+            IRoomService roomService,
+            ILogger<GameHub> logger, ILogger<Game> _gameLogger)
         {
-            _game = game;
+            _playerService = playerService;
+            _roomService = roomService;
             _logger = logger;
         }
 
         public override async Task OnConnectedAsync()
         {
-            _game.AddPlayer(Context.ConnectionId);
-
-            // TODO: properly sync until client is ready to receive messages
-            await Task.Delay(100);
-
-            foreach (var player in _game.Players)
-            {
-                await Clients.Caller.UserPresence(player.Id, player.UserName, player.HealthPoints);
-            }
-
-            await Clients.Others.UserJoined(Context.ConnectionId);
-
             _logger.LogInformation("{} has connected", Context.ConnectionId);
-
-            await Task.Delay(100);
-
-#if DEBUG
-            if (!_game.Started)
-                _game.Start();
-#endif
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            _game.RemovePlayer(Context.ConnectionId);
+            _playerService.RemovePlayer(Context.ConnectionId);
 
-            await Clients.Others.UserLeft(Context.ConnectionId);
+            if (_roomService.IsPlayerInRoom(Context.ConnectionId))
+                await LeaveRoom();
 
             _logger.LogInformation("{} has disconnected", Context.ConnectionId);
 
         }
 
-        public async Task ChangeName(string name)
+        public async Task UpdateSettings(PlayerSettings playerSettings)
         {
-            _game.ChangePlayerName(Context.ConnectionId, name);
+            if (_playerService.PlayerExists(Context.ConnectionId))
+            {
+                _logger.LogInformation("{} has updated their settings", Context.ConnectionId);
 
-            await Clients.All.UserChangedName(Context.ConnectionId, name);
+                var existingPlayer = _playerService.GetPlayer(Context.ConnectionId)!;
+                existingPlayer.Settings = playerSettings;
+            }
+            else
+            {
+                _logger.LogInformation("{} has shared their settings", Context.ConnectionId);
+
+                var newPlayer = new Player(Context.ConnectionId);
+                newPlayer.Settings = playerSettings;
+
+                _playerService.AddPlayer(newPlayer);
+                await SendLobbyUpdate();
+            }
+        }
+
+
+        public async Task RequestActiveRooms()
+        {
+            // await SendLobbyUpdate();
+
+            _logger.LogInformation("{} has requested active rooms", Context.ConnectionId);
+
+            await Clients.Caller.ActiveRooms(_roomService.ActiveRooms
+                .Select(r => new RoomDetailsDto
+                {
+                    Id = r.Id.ToString(),
+                    Name = r.Name,
+                    OwnerName = r.Owner.DisplayName,
+                    PlayerNames = r.Players.Select(p => p.DisplayName).ToArray(),
+                    Settings = r.Settings
+                }).ToList());
+        }
+
+        public async Task CreateRoom(CreateRoomDto createRoomDto)
+        {
+            _logger.LogInformation("{} has created room {}", Context.ConnectionId, createRoomDto.Name);
+
+            var owner = _playerService.GetPlayer(Context.ConnectionId);
+            var room = new Room(createRoomDto, owner);
+            _roomService.CreateRoom(room);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
+
+            await Clients.Caller.JoinRoomResult(true);
+            await Clients.Caller.UserPresence(owner);
+
+            await SendLobbyUpdate();
+
+#if DEBUG
+            await Task.Delay(500);
+            room.StartGame();
+#endif
+        }
+
+        public async Task JoinRoom(string roomId, string? password)
+        {
+            var room = _roomService.GetRoom(roomId);
+            if (room is null)
+                throw new Exception("Room doesn't exist.");
+
+            var player = _playerService.GetPlayer(Context.ConnectionId);
+            if (player is null)
+                throw new Exception("User not authenticated.");
+
+            var joinSuccess = room.AuthenticatePlayer(player, password);
+            if (joinSuccess)
+                await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
+
+            await Clients.Caller.JoinRoomResult(joinSuccess);
+
+            foreach (var existingPlayer in room.Players)
+            {
+                await Clients.Caller.UserPresence(existingPlayer);
+            }
+            await Clients.Others.UserJoined(player);
+
+            await SendLobbyUpdate();
+        }
+
+        public async Task LeaveRoom()
+        {
+            await OthersInRoom.UserLeft(Context.ConnectionId);
+
+            var room = _roomService.CurrentRoom(Context.ConnectionId)!;
+            room.RemovePlayer(Context.ConnectionId);
+
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.GroupName);
+
+            if (room.Players.Count() == 0)
+                _roomService.DestroyRoom(room.Id.ToString());
+
+            _logger.LogInformation("{} has left room {}", Context.ConnectionId, room.Name);
+
+            await SendLobbyUpdate();
         }
 
         public async Task SendChatMessage(string text)
         {
-            await Clients.All.ChatMessage(Context.ConnectionId, text);
+            await CurrentRoom.ChatMessage(Context.ConnectionId, text);
 
             _logger.LogInformation("{}: {}", Context.ConnectionId, text);
 
             if (text == "/start")
             {
-                _game.Start();
+                var room = _roomService.CurrentRoom(Context.ConnectionId);
+                room.StartGame();
             }
         }
 
         public async Task SetInput(string text)
         {
-            await Clients.Others.UserTyping(Context.ConnectionId, text);
+            await OthersInRoom.UserTyping(Context.ConnectionId, text);
         }
 
         public async Task SubmitInput(string text)
         {
-            var right = _game.SubmitAnswer(Context.ConnectionId, text);
-            await Clients.All.UserSubmittedAnswer(Context.ConnectionId, text, right);
+            var room = _roomService.CurrentRoom(Context.ConnectionId);
+            var right = room.Game.SubmitAnswer(Context.ConnectionId, text);
+            await CurrentRoom.UserSubmittedAnswer(Context.ConnectionId, text, right);
 
             if (right)
-                _game.NextRound();
+                room.Game.NextRound();
+        }
+
+        private async Task SendLobbyUpdate()
+        {
+            // TODO: create a group for lobby so we don't have to send this to everyone
+            await Clients.All.ActiveRooms(_roomService.ActiveRooms
+                .Select(r => new RoomDetailsDto
+                {
+                    Id = r.Id.ToString(),
+                    Name = r.Name,
+                    OwnerName = r.Owner.DisplayName,
+                    PlayerNames = r.Players.Select(p => p.DisplayName).ToArray(),
+                    Settings = r.Settings
+                }).ToList());
+        }
+
+        private IGameServer CurrentRoom
+        {
+            get
+            {
+                var room = _roomService.CurrentRoom(Context.ConnectionId) ?? throw new Exception("User is not in a room.");
+
+                return Clients.Group(room.GroupName);
+            }
+        }
+
+        private IGameServer OthersInRoom
+        {
+            get
+            {
+                var room = _roomService.CurrentRoom(Context.ConnectionId) ?? throw new Exception("User is not in a room.");
+
+                return Clients.OthersInGroup(room.GroupName);
+            }
         }
     }
 }

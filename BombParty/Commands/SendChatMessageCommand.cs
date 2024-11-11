@@ -1,5 +1,5 @@
 ﻿using BombParty.Services;
-using BombParty.ViewModels;
+using BombParty.ViewModels.Game;
 using System.Windows.Input;
 
 namespace BombParty.Commands

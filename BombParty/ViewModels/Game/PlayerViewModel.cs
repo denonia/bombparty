@@ -1,4 +1,4 @@
-﻿namespace BombParty.ViewModels
+﻿namespace BombParty.ViewModels.Game
 {
     public class PlayerViewModel : BaseViewModel
     {
@@ -18,13 +18,13 @@
 
         public string Id { get; }
 
-        public string DisplayName 
-        { 
-            get => _displayName; 
-            set => SetField(ref _displayName, value); 
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetField(ref _displayName, value);
         }
 
-        public string Input 
+        public string Input
         {
             get => _input;
             set
@@ -34,28 +34,28 @@
             }
         }
 
-        public int HealthPoints 
-        { 
-            get => _healthPoints; 
-            set => SetField(ref _healthPoints, value); 
+        public int HealthPoints
+        {
+            get => _healthPoints;
+            set => SetField(ref _healthPoints, value);
         }
 
-        public bool IsTurn 
-        { 
-            get => _isTurn; 
-            set => SetField(ref _isTurn, value); 
+        public bool IsTurn
+        {
+            get => _isTurn;
+            set => SetField(ref _isTurn, value);
         }
 
-        public bool IsRed 
-        { 
-            get => _isRed; 
-            set => SetField(ref _isRed, value); 
+        public bool IsRed
+        {
+            get => _isRed;
+            set => SetField(ref _isRed, value);
         }
 
         public bool IsGreen
         {
-            get => _isGreen; 
-            set => SetField(ref _isGreen, value); 
+            get => _isGreen;
+            set => SetField(ref _isGreen, value);
         }
 
         public void ShowRed()

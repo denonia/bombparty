@@ -1,8 +1,15 @@
-﻿namespace BombParty.Common
+﻿using BombParty.Common.Dtos;
+
+namespace BombParty.Common
 {
     public interface IGameClient
     {
-        Task ChangeName(string name);
+        Task UpdateSettings(PlayerSettings playerSettings);
+        Task RequestActiveRooms();
+        Task CreateRoom(CreateRoomDto createRoomDto);
+        Task JoinRoom(string roomId, string? password);
+        Task LeaveRoom();
+
         Task SendChatMessage(string text);
 
         Task SetInput(string text);

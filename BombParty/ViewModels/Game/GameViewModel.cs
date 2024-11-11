@@ -1,11 +1,13 @@
 ﻿using BombParty.Commands;
+using BombParty.Common;
 using BombParty.Services;
+using BombParty.ViewModels.Lobby;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using Timer = System.Timers.Timer;
 
-namespace BombParty.ViewModels
+namespace BombParty.ViewModels.Game
 {
     public class GameViewModel : BaseViewModel
     {
@@ -18,9 +20,10 @@ namespace BombParty.ViewModels
         private string _chatHistory;
         private string _chatInput;
         private DateTime _roundStartTime;
-        private DispatcherTimer _progressTimer = new();
+        private Timer _progressTimer;
 
-        public GameViewModel(SynchronizationContext synchronizationContext, GameService gameService)
+        public GameViewModel(SynchronizationContext synchronizationContext, 
+            GameService gameService, NavigationService<LobbyViewModel> lobbyNavService)
         {
             _synchronizationContext = synchronizationContext;
             _gameService = gameService;
@@ -31,44 +34,41 @@ namespace BombParty.ViewModels
             _gameService.OnUserPresence += OnUserPresence;
             _gameService.OnUserJoined += OnUserJoined;
             _gameService.OnUserLeft += OnUserLeft;
-            _gameService.OnUserNameChanged += OnUserNameChanged;
             _gameService.OnUserTyping += OnUserTyping;
             _gameService.OnAnswerSubmitted += OnAnswerSubmitted;
 
             SubmitAnswerCommand = new SubmitAnswerCommand(this, _gameService);
             SendChatMessageCommand = new SendChatMessageCommand(this, _gameService);
+            LeaveRoomCommand = new LeaveRoomCommand(_gameService, lobbyNavService);
 
-            _progressTimer.Tick += (_, _) =>
-            {
-                OnPropertyChanged(nameof(RoundProgress));
-            };
-            _progressTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            _progressTimer = new Timer(100);
+            _progressTimer.Elapsed += OnProgressTimerTick;
             _progressTimer.Start();
         }
 
         public ICommand SubmitAnswerCommand { get; }
         public ICommand SendChatMessageCommand { get; }
+        public ICommand LeaveRoomCommand { get; }
 
         public ObservableCollection<PlayerViewModel> Players { get; set; } = new();
 
-        // TODO: round duration
-        public int RoundProgress => 100 - (int)((DateTime.Now - _roundStartTime).TotalMilliseconds / 10000.0 * 100.0);
+        public int RoundProgress => 100 - (int)((DateTime.Now - _roundStartTime).TotalMilliseconds / (_gameService.RoomSettings.RoundTime * 1000.0) * 100.0);
 
-        public bool IsTurn 
-        { 
-            get => _isTurn; 
-            set => SetField(ref _isTurn, value); 
+        public bool IsTurn
+        {
+            get => _isTurn;
+            set => SetField(ref _isTurn, value);
         }
 
-        public string CurrentCombination 
-        { 
-            get => _currentCombination; 
-            set => SetField(ref _currentCombination, value); 
+        public string CurrentCombination
+        {
+            get => _currentCombination;
+            set => SetField(ref _currentCombination, value);
         }
 
-        public string Input 
-        { 
-            get => _input; 
+        public string Input
+        {
+            get => _input;
             set
             {
                 SetField(ref _input, value);
@@ -78,15 +78,15 @@ namespace BombParty.ViewModels
         }
 
         public string ChatHistory
-        { 
-            get => _chatHistory; 
-            set => SetField(ref _chatHistory, value); 
+        {
+            get => _chatHistory;
+            set => SetField(ref _chatHistory, value);
         }
 
         public string ChatInput
-        { 
-            get => _chatInput; 
-            set => SetField(ref _chatInput, value); 
+        {
+            get => _chatInput;
+            set => SetField(ref _chatInput, value);
         }
 
         private void OnRoundStart(string userId, string currentCombination)
@@ -133,11 +133,15 @@ namespace BombParty.ViewModels
             }, null);
         }
 
-        private void OnUserJoined(string userId)
+        private void OnUserJoined(Player player)
         {
             _synchronizationContext.Post((_) =>
             {
-                Players.Add(new PlayerViewModel(userId));
+                Players.Add(new PlayerViewModel(player.Id)
+                {
+                    DisplayName = player.DisplayName,
+                    HealthPoints = player.HealthPoints
+                });
             }, null);
         }
 
@@ -168,6 +172,26 @@ namespace BombParty.ViewModels
                 player.ShowGreen();
             else
                 player.ShowRed();
+        }
+
+        private void OnProgressTimerTick(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            OnPropertyChanged(nameof(RoundProgress));
+        }
+
+        public override void Dispose()
+        {
+            _gameService.OnRoundStart -= OnRoundStart;
+            _gameService.OnGameOver -= OnGameOver;
+            _gameService.OnHealthChanged -= OnHealthChanged;
+            _gameService.OnChatMessage -= OnChatMessage;
+            _gameService.OnUserPresence -= OnUserPresence;
+            _gameService.OnUserJoined -= OnUserJoined;
+            _gameService.OnUserLeft -= OnUserLeft;
+            _gameService.OnUserTyping -= OnUserTyping;
+            _gameService.OnAnswerSubmitted -= OnAnswerSubmitted;
+
+            _progressTimer.Elapsed -= OnProgressTimerTick;
         }
     }
 }

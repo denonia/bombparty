@@ -14,12 +14,11 @@ namespace BombParty.Server
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
 
-            builder.Services.AddSingleton<Game>();
-            builder.Services.AddSingleton<GameEventService>();
+            builder.Services.AddSingleton<IEventService, EventService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
+            builder.Services.AddSingleton<IPlayerService, PlayerService>();
 
             var app = builder.Build();
-
-            app.Services.GetRequiredService<GameEventService>();
 
             // Configure the HTTP request pipeline.
 

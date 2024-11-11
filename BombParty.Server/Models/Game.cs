@@ -1,21 +1,25 @@
-﻿using System.Timers;
+﻿using BombParty.Common;
+using System.Timers;
 
-namespace BombParty.Server.Services
+namespace BombParty.Server.Models
 {
     public class Game : IDisposable
     {
         private readonly WordDictionary _dictionary;
-        private readonly ILogger<Game> _logger;
 
         private List<Player> _players = new();
+
         int _currentPlayer = -1;
         string _currentCombination = string.Empty;
         System.Timers.Timer _timeoutTimer = new();
 
-        public Game(ILogger<Game> logger)
+        public Game(Room room, List<Player> players, RoomSettings settings)
         {
+            _players = players;
+            Room = room;
+            Settings = settings;
+
             _dictionary = new WordDictionary("english.txt");
-            _logger = logger;
 
             _timeoutTimer.Elapsed += new ElapsedEventHandler(OnRoundTimeout);
         }
@@ -24,23 +28,22 @@ namespace BombParty.Server.Services
         public event Action? OnGameOver;
         public event Action<string, int>? OnHealthChanged;
 
+        public Room Room { get; }
+        public RoomSettings Settings { get; }
         public bool Started { get; set; }
         public Player CurrentPlayer => _players[_currentPlayer];
-        public IEnumerable<Player> Players => _players;
-        public int StartHealthPoints { get; set; } = 5;
-        public int RoundTime { get; set; } = 10000;
 
         public void Start()
         {
             Started = true;
 
             _currentPlayer = -1;
-            _timeoutTimer.Interval = RoundTime;
+            _timeoutTimer.Interval = Settings.RoundTime * 1000;
             _timeoutTimer.Enabled = true;
 
             foreach (var player in _players)
             {
-                player.HealthPoints = StartHealthPoints;
+                player.HealthPoints = Settings.StartHealthPoints;
                 OnHealthChanged?.Invoke(player.Id, player.HealthPoints);
             }
 
@@ -78,7 +81,13 @@ namespace BombParty.Server.Services
         {
             _timeoutTimer.Stop();
 
-            if (_players.Count == 0 || _players.All(p => !p.Alive))
+            // End the game if:
+            // 1. There are no players left.
+            // 2. If there is only one player and they're dead.
+            // 3. If there are 2+ players and everyone but one is dead.
+            if (_players.Count == 0 
+                || _players.Count == 1 && _players.All(p => !p.Alive)
+                || _players.Count > 1 && _players.Count(p => p.Alive) == 1)
             {
                 End();
                 return;
@@ -89,7 +98,7 @@ namespace BombParty.Server.Services
             NextPlayer();
             _currentCombination = _dictionary.GetRandomCombination();
 
-            _logger.LogInformation("New round {}", _currentCombination);
+            //_logger.LogInformation("New round {}", _currentCombination);
 
             OnRoundStart?.Invoke(_players[_currentPlayer].Id, _currentCombination);
         }
@@ -101,34 +110,12 @@ namespace BombParty.Server.Services
                 return false;
 
             var right = answer.Contains(_currentCombination) && _dictionary.Contains(answer);
-            if (right)
-                _logger.LogInformation("{} has submitted the right answer: {}", player.DisplayName, answer);
-            else
-                _logger.LogInformation("{} has submitted the wrong answer: {}", player.DisplayName, answer);
+            //if (right)
+            //    _logger.LogInformation("{} has submitted the right answer: {}", player.DisplayName, answer);
+            //else
+            //    _logger.LogInformation("{} has submitted the wrong answer: {}", player.DisplayName, answer);
 
             return right;
-        }
-
-        public void AddPlayer(string id)
-        {
-            _players.Add(new Player(id)
-            {
-                HealthPoints = StartHealthPoints
-            });
-        }
-
-        public void RemovePlayer(string id)
-        {
-            var removeIndex = _players.FindIndex(p => p.Id == id);
-
-            _players.RemoveAt(removeIndex);
-
-            NextRound();
-        }
-
-        public void ChangePlayerName(string id, string newName)
-        {
-            _players.Single(p => p.Id == id).UserName = newName;
         }
 
         public void Dispose()

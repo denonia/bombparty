@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace BombParty.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -18,6 +18,11 @@ namespace BombParty.ViewModels
             field = value;
             OnPropertyChanged(propertyName);
             return true;
+        }
+
+
+        public virtual void Dispose()
+        {
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿namespace BombParty.Server
+﻿namespace BombParty.Common
 {
     public class Player
     {
         public string Id { get; set; }
-        public string? UserName { get; set; }
-        public string DisplayName => UserName ?? Id;
+        public PlayerSettings Settings { get; set; }
+
+        public string DisplayName => Settings.UserName ?? Id;
 
         public string Input { get; set; } = string.Empty;
 
@@ -13,12 +14,12 @@
 
         public Player(string id)
         {
-            Id = id; 
+            Id = id;
         }
 
         public void Damage()
         {
-            if (HealthPoints > 0) 
+            if (HealthPoints > 0)
                 HealthPoints--;
         }
     }

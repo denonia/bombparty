@@ -3,10 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BombParty" xmlns:views="clr-namespace:BombParty.Views"
+        xmlns:local="clr-namespace:BombParty" 
+        xmlns:vms="clr-namespace:BombParty.ViewModels"
+        xmlns:lobby="clr-namespace:BombParty.ViewModels.Lobby"
+        xmlns:game="clr-namespace:BombParty.ViewModels.Game"
+        xmlns:views="clr-namespace:BombParty.Views"
         mc:Ignorable="d"
         Title="Bomb Party" Height="450" Width="800">
     <Grid>
-        <views:GameView/>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type lobby:LobbyViewModel}">
+                <views:LobbyView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vms:SettingsViewModel}">
+                <views:SettingsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vms:CreateRoomViewModel}">
+                <views:CreateRoomView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type game:GameViewModel}">
+                <views:GameView />
+            </DataTemplate>
+        </Grid.Resources>
+
+        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <!--<views:GameView/>-->
     </Grid>
 </Window>
