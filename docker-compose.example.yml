@@ -7,5 +7,3 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./dict/english.txt:/app/english.txt

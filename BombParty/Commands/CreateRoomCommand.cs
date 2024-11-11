@@ -28,7 +28,7 @@ namespace BombParty.Commands
                 Password = _viewModel.Password,
                 Settings = new RoomSettings
                 {
-                    Language = _viewModel.Language.Value,
+                    Language = _viewModel.Dictionary.Language,
                     StartHealthPoints = _viewModel.StartHealthPoints,
                     RoundTime = _viewModel.RoundTime
                 }

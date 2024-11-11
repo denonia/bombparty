@@ -20,7 +20,7 @@
             <TextBox Text="{Binding Password}" Margin="0 4" />
 
             <TextBlock Text="Language" Margin="0 10 0 0" />
-            <ComboBox ItemsSource="{Binding DictionaryLanguages}" SelectedItem="{Binding Language}" Margin="0 4"/>
+            <ComboBox ItemsSource="{Binding Dictionaries}" SelectedItem="{Binding Dictionary}" Margin="0 4"/>
 
             <TextBlock Text="Start health" Margin="0 10 0 0" />
             <TextBox Text="{Binding StartHealthPoints}" Margin="0 4" />

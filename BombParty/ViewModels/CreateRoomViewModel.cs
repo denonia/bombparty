@@ -1,10 +1,8 @@
 ﻿using BombParty.Commands;
-using BombParty.Common.Enums;
 using BombParty.Services;
 using BombParty.ViewModels.Game;
 using BombParty.ViewModels.Lobby;
 using System.Windows.Input;
-using static BombParty.Languages;
 
 namespace BombParty.ViewModels
 {
@@ -13,7 +11,7 @@ namespace BombParty.ViewModels
         private readonly SettingsStore _settingsStore;
         private string _name;
         private string _password = string.Empty;
-        private Language _language = Languages.DictionaryLanguages.First();
+        private GameDictionary _dictionary = GameDictionaries.Dictionaries.First();
         private int _startHealthPoints = 5;
         private int _roundtime = 5;
 
@@ -32,7 +30,7 @@ namespace BombParty.ViewModels
         public ICommand BackCommand { get; }
         public CreateRoomCommand SubmitCommand { get; }
 
-        public IEnumerable<Language> DictionaryLanguages => Languages.DictionaryLanguages;
+        public IEnumerable<GameDictionary> Dictionaries => GameDictionaries.Dictionaries;
 
         public string Name 
         {
@@ -46,10 +44,10 @@ namespace BombParty.ViewModels
             set => SetField(ref _password, value); 
         }
 
-        public Language Language 
+        public GameDictionary Dictionary 
         {
-            get => _language; 
-            set => SetField(ref _language, value); 
+            get => _dictionary; 
+            set => SetField(ref _dictionary, value); 
         }
 
         public int StartHealthPoints 

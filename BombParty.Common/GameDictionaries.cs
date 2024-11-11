@@ -2,24 +2,24 @@
 
 namespace BombParty
 {
-    public static class GameDictionaries
+    public class GameDictionary
     {
-        public class GameDictionary
+        public GameDictionary(DictionaryLanguage value, string fileName, string displayName)
         {
-            public GameDictionary(DictionaryLanguage value, string fileName, string displayName)
-            {
-                Language = value;
-                FileName = fileName;
-                DisplayName = displayName;
-            }
-
-            public DictionaryLanguage Language { get; set; }
-            public string FileName { get; set; }
-            public string DisplayName { get; set; }
-
-            public override string ToString() => DisplayName;
+            Language = value;
+            FileName = fileName;
+            DisplayName = displayName;
         }
 
+        public DictionaryLanguage Language { get; set; }
+        public string FileName { get; set; }
+        public string DisplayName { get; set; }
+
+        public override string ToString() => DisplayName;
+    }
+
+    public static class GameDictionaries
+    {
         public static IList<GameDictionary> Dictionaries = 
         [
             new GameDictionary(DictionaryLanguage.English, "English.txt.gz", "English"),
