@@ -1,6 +1,6 @@
 ﻿using BombParty.Common;
-using BombParty.Common.Enums;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace BombParty.Server.Models
 {
@@ -10,9 +10,10 @@ namespace BombParty.Server.Models
 
         private List<Player> _players = new();
 
-        int _currentPlayer = -1;
-        string _currentCombination = string.Empty;
-        System.Timers.Timer _timeoutTimer = new();
+        private int _currentPlayer = -1;
+        private List<string> _usedWords = new();
+        private string _currentCombination = string.Empty;
+        private Timer _timeoutTimer = new();
 
         public Game(Room room, List<Player> players, RoomSettings settings, WordDictionary dictionary)
         {
@@ -38,6 +39,7 @@ namespace BombParty.Server.Models
         {
             Started = true;
 
+            _usedWords.Clear();
             _currentPlayer = -1;
             _timeoutTimer.Interval = Settings.RoundTime * 1000;
             _timeoutTimer.Enabled = true;
@@ -110,11 +112,15 @@ namespace BombParty.Server.Models
             if (player.Id != userId)
                 return false;
 
-            var right = answer.Contains(_currentCombination) && _dictionary.Contains(answer);
+            var right = answer.Contains(_currentCombination) && _dictionary.Contains(answer) && !_usedWords.Contains(answer);
+
             //if (right)
             //    _logger.LogInformation("{} has submitted the right answer: {}", player.DisplayName, answer);
             //else
             //    _logger.LogInformation("{} has submitted the wrong answer: {}", player.DisplayName, answer);
+
+            if (right)
+                _usedWords.Add(answer);
 
             return right;
         }
