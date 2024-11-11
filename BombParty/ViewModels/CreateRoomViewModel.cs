@@ -8,15 +8,20 @@ namespace BombParty.ViewModels
 {
     public class CreateRoomViewModel : BaseViewModel, IDisposable
     {
-        private string _name = string.Empty;
+        private readonly SettingsStore _settingsStore;
+        private string _name;
         private string _password = string.Empty;
         private int _startHealthPoints = 5;
         private int _roundtime = 5;
 
         public CreateRoomViewModel(GameService gameService, 
+            SettingsStore settingsStore,
             NavigationService<LobbyViewModel> lobbyNavService,
             NavigationService<GameViewModel> gameNavService)
         {
+            _settingsStore = settingsStore;
+            _name = (settingsStore.Settings.UserName ?? gameService.ConnectionId) + "'s game";
+
             BackCommand = new NavigateCommand<LobbyViewModel>(lobbyNavService);
             SubmitCommand = new CreateRoomCommand(this, gameService, gameNavService);
         }

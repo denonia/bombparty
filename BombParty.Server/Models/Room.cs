@@ -61,6 +61,12 @@ namespace BombParty.Server.Models
         {
             if (_players.RemoveAll(p => p.Id == playerId) > 0)
                 Game.NextRound();
+
+            // Transfer the ownership
+            if (playerId == OwnerId && _players.Count != 0)
+            {
+                OwnerId = _players[0].Id;
+            }
         }
 
         public bool IsPlayerInRoom(string playerId)
