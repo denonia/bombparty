@@ -12,6 +12,7 @@ namespace BombParty.ViewModels.Lobby
         private readonly SynchronizationContext _synchronizationContext;
 
         public LobbyViewModel(GameService gameService,
+            PasswordEntryService passwordEntryService,
             NavigationService<CreateRoomViewModel> createRoomNavService,
             NavigationService<SettingsViewModel> settingsNavService,
             NavigationService<GameViewModel> gameNavService,
@@ -20,7 +21,7 @@ namespace BombParty.ViewModels.Lobby
             _gameService = gameService;
             _synchronizationContext = synchronizationContext;
             CreateRoomCommand = new NavigateCommand<CreateRoomViewModel>(createRoomNavService);
-            JoinRoomCommand = new JoinRoomCommand(this, gameService, gameNavService);
+            JoinRoomCommand = new JoinRoomCommand(this, gameService, passwordEntryService, gameNavService);
             SettingsCommand = new NavigateCommand<SettingsViewModel>(settingsNavService);
 
             gameService.RequestActiveRooms().ConfigureAwait(false);
@@ -42,7 +43,9 @@ namespace BombParty.ViewModels.Lobby
 
                 foreach (var roomDto in roomDtos)
                 {
-                    var roomViewModel = new RoomViewModel(roomDto.Id, roomDto.Name, roomDto.OwnerName, roomDto.PlayerNames.Length);
+                    var roomViewModel = new RoomViewModel(roomDto.Id, roomDto.Name, roomDto.OwnerName, 
+                        roomDto.PlayerNames.Length, roomDto.RequiresPassword);
+
                     Rooms.Add(roomViewModel);
                 }
 

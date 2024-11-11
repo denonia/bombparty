@@ -6,13 +6,15 @@
         private string _title;
         private string _ownerName;
         private int _playerCount;
+        private bool _requiresPassword;
 
-        public RoomViewModel(string id, string title, string ownerName, int playerCount)
+        public RoomViewModel(string id, string title, string ownerName, int playerCount, bool requiresPassword)
         {
             Id = id;
             Title = title;
             OwnerName = ownerName;
             PlayerCount = playerCount;
+            RequiresPassword = requiresPassword;
         }
 
         public string Id 
@@ -37,6 +39,12 @@
         { 
             get => _playerCount; 
             set => SetField(ref _playerCount, value); 
+        }
+
+        public bool RequiresPassword 
+        { 
+            get => _requiresPassword; 
+            set => SetField(ref _requiresPassword, value); 
         }
 
         public string OwnerText => "Hosted by " + OwnerName;

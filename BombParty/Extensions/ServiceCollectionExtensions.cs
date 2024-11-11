@@ -20,7 +20,8 @@ namespace BombParty.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services
-                .AddSingleton<GameService>();
+                .AddSingleton<GameService>()
+                .AddSingleton<PasswordEntryService>();
 
             return services;
         }

@@ -62,7 +62,6 @@ namespace BombParty.Server.Hubs
             }
         }
 
-
         public async Task RequestActiveRooms()
         {
             // await SendLobbyUpdate();
@@ -75,6 +74,7 @@ namespace BombParty.Server.Hubs
                     Id = r.Id.ToString(),
                     Name = r.Name,
                     OwnerName = r.Owner.DisplayName,
+                    RequiresPassword = r.RequiresPassword,
                     PlayerNames = r.Players.Select(p => p.DisplayName).ToArray(),
                     Settings = r.Settings
                 }).ToList());
@@ -112,10 +112,12 @@ namespace BombParty.Server.Hubs
                 throw new Exception("User not authenticated.");
 
             var joinSuccess = room.AuthenticatePlayer(player, password);
-            if (joinSuccess)
-                await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
-
             await Clients.Caller.JoinRoomResult(joinSuccess, room.Settings);
+
+            if (!joinSuccess)
+                return;
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.GroupName);
 
             foreach (var existingPlayer in room.Players)
             {
@@ -180,6 +182,7 @@ namespace BombParty.Server.Hubs
                     Id = r.Id.ToString(),
                     Name = r.Name,
                     OwnerName = r.Owner.DisplayName,
+                    RequiresPassword = r.RequiresPassword,
                     PlayerNames = r.Players.Select(p => p.DisplayName).ToArray(),
                     Settings = r.Settings
                 }).ToList());

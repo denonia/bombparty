@@ -35,6 +35,7 @@ namespace BombParty.Server.Models
         public string OwnerId { get; set; }
         public string Name { get; set; }
         public string? Password { get; set; }
+        public bool RequiresPassword => !string.IsNullOrEmpty(Password);
 
         public RoomSettings Settings { get; set; }
         public Game Game { get; private set; }
@@ -48,7 +49,7 @@ namespace BombParty.Server.Models
 
         public bool AuthenticatePlayer(Player player, string? password)
         {
-            if (!string.IsNullOrEmpty(Password) && password != Password)
+            if (RequiresPassword && password != Password)
                 return false;
 
             player.HealthPoints = Game.Settings.StartHealthPoints;
