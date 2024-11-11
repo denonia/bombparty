@@ -70,7 +70,8 @@ namespace BombParty.Server.Services
 
             _logger.LogInformation("{} has submitted answer: {} ({})", playerId, answer, right ? "+" : "-");
 
-            room.Game.NextRound();
+            if (right)
+                room.Game.NextRound();
 
             return right;
         }
