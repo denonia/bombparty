@@ -24,7 +24,7 @@ namespace BombParty.Services
         public event Action<IList<RoomDetailsDto>>? OnActiveRooms;
         public event Action<bool>? OnJoinRoomResult;
         
-        public event Action<string, string?, int>? OnUserPresence;
+        public event Action<Player>? OnUserPresence;
         public event Action<Player>? OnUserJoined;
         public event Action<string>? OnUserLeft;
 
@@ -68,7 +68,7 @@ namespace BombParty.Services
             _hubConnection.On<Player>("UserPresence", (player) =>
             {
                 _players.Add(player);
-                OnUserPresence?.Invoke(player.Id, player.Settings.UserName, player.HealthPoints);
+                OnUserPresence?.Invoke(player);
             });
 
             _hubConnection.On<Player>("UserJoined", (player) =>

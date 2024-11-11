@@ -1,8 +1,11 @@
-﻿namespace BombParty.ViewModels.Game
+﻿using BombParty.Common;
+
+namespace BombParty.ViewModels.Game
 {
     public class PlayerViewModel : BaseViewModel
     {
         private string _displayName;
+        private Avatar _avatar;
         private string _input;
         private int _healthPoints;
 
@@ -22,6 +25,12 @@
         {
             get => _displayName;
             set => SetField(ref _displayName, value);
+        }
+
+        public Avatar Avatar
+        {
+            get => _avatar;
+            set => SetField(ref _avatar, value);
         }
 
         public string Input

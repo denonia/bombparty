@@ -42,6 +42,7 @@
                             CommandParameter="{Binding Id}"
                             Content="Join" Height="24" Padding="8 0" Margin="20 0 0 0"/>
                     </StackPanel>
+
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

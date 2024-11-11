@@ -35,7 +35,8 @@
                                 <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="Green" />
 
                                 <StackPanel Width="100" Margin="10">
-                                    <Image Source="{StaticResource Avatar}" Width="100" />
+                                    <ContentControl Content="{Binding Avatar}"/>
+
                                     <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding Input}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding HealthPoints}" HorizontalAlignment="Center"/>

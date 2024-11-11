@@ -25,7 +25,8 @@ namespace BombParty.Commands
         {
             var newPlayerSettings = new PlayerSettings
             {
-                UserName = _viewModel.Name
+                UserName = _viewModel.Name,
+                AvatarId = _viewModel.Avatar.Id
             };
 
             var newSettings = _settingsStore.Settings;

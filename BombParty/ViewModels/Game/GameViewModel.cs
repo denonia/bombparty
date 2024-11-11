@@ -31,7 +31,7 @@ namespace BombParty.ViewModels.Game
             _gameService.OnGameOver += OnGameOver;
             _gameService.OnHealthChanged += OnHealthChanged;
             _gameService.OnChatMessage += OnChatMessage;
-            _gameService.OnUserPresence += OnUserPresence;
+            _gameService.OnUserPresence += OnUserJoined;
             _gameService.OnUserJoined += OnUserJoined;
             _gameService.OnUserLeft += OnUserLeft;
             _gameService.OnUserTyping += OnUserTyping;
@@ -121,18 +121,6 @@ namespace BombParty.ViewModels.Game
                 ChatHistory += $"{Environment.NewLine}{senderName}: {text}";
         }
 
-        private void OnUserPresence(string userId, string? userName, int healthPoints)
-        {
-            _synchronizationContext.Post((_) =>
-            {
-                Players.Add(new PlayerViewModel(userId)
-                {
-                    DisplayName = userName ?? userId,
-                    HealthPoints = healthPoints
-                });
-            }, null);
-        }
-
         private void OnUserJoined(Player player)
         {
             _synchronizationContext.Post((_) =>
@@ -140,6 +128,7 @@ namespace BombParty.ViewModels.Game
                 Players.Add(new PlayerViewModel(player.Id)
                 {
                     DisplayName = player.DisplayName,
+                    Avatar = Avatars.GetAvatar(player.Settings.AvatarId),
                     HealthPoints = player.HealthPoints
                 });
             }, null);
@@ -185,7 +174,7 @@ namespace BombParty.ViewModels.Game
             _gameService.OnGameOver -= OnGameOver;
             _gameService.OnHealthChanged -= OnHealthChanged;
             _gameService.OnChatMessage -= OnChatMessage;
-            _gameService.OnUserPresence -= OnUserPresence;
+            _gameService.OnUserPresence -= OnUserJoined;
             _gameService.OnUserJoined -= OnUserJoined;
             _gameService.OnUserLeft -= OnUserLeft;
             _gameService.OnUserTyping -= OnUserTyping;

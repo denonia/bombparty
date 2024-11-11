@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\avatar-1.jpg" />
+    <None Remove="Images\avatar-2.jpg" />
+    <None Remove="Images\avatar-3.jpg" />
+    <None Remove="Images\avatar-4.jpg" />
+    <None Remove="Images\avatar-5.jpg" />
+    <None Remove="Images\avatar-6.jpg" />
+    <None Remove="Images\avatar-7.jpg" />
+    <None Remove="Images\avatar-8.jpg" />
     <None Remove="Images\bomb.png" />
     <None Remove="Images\goofy.png" />
   </ItemGroup>
@@ -23,6 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\avatar-1.jpg" />
+    <Resource Include="Images\avatar-2.jpg" />
+    <Resource Include="Images\avatar-3.jpg" />
+    <Resource Include="Images\avatar-4.jpg" />
+    <Resource Include="Images\avatar-5.jpg" />
+    <Resource Include="Images\avatar-6.jpg" />
+    <Resource Include="Images\avatar-7.jpg" />
+    <Resource Include="Images\avatar-8.jpg" />
     <Resource Include="Images\bomb.png" />
     <Resource Include="Images\goofy.png" />
   </ItemGroup>
