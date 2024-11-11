@@ -66,9 +66,11 @@ namespace BombParty.Server.Services
         public bool PlayerSubmitAnswer(string playerId, string answer)
         {
             var room = CurrentRoom(playerId);
-            var right = room.Game.SubmitAnswer(playerId, answer);
+            var right = room.Game.CheckAnswer(playerId, answer);
 
             _logger.LogInformation("{} has submitted answer: {} ({})", playerId, answer, right ? "+" : "-");
+
+            room.Game.NextRound();
 
             return right;
         }

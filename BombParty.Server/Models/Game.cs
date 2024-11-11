@@ -94,7 +94,7 @@ namespace BombParty.Server.Models
             OnRoundStart?.Invoke(Players[_currentPlayer].Id, _currentCombination);
         }
 
-        public bool SubmitAnswer(string userId, string answer)
+        public bool CheckAnswer(string userId, string answer)
         {
             var player = Players[_currentPlayer];
             if (player.Id != userId)
@@ -103,10 +103,7 @@ namespace BombParty.Server.Models
             var right = answer.Contains(_currentCombination) && _dictionary.Contains(answer) && !_usedWords.Contains(answer);
 
             if (right)
-            {
                 _usedWords.Add(answer);
-                NextRound();
-            }
 
             return right;
         }
