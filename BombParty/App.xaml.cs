@@ -2,8 +2,10 @@
 using BombParty.Services;
 using BombParty.ViewModels;
 using BombParty.ViewModels.Lobby;
+using BombParty.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace BombParty
 {
@@ -12,6 +14,11 @@ namespace BombParty
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             var services = new ServiceCollection()
@@ -35,6 +42,19 @@ namespace BombParty
             };
 
             mainWindow.Show();
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            var errorWindow = new ErrorWindow()
+            {
+                DataContext = new ErrorViewModel(e.Exception.ToString()),
+                Owner = Current.MainWindow
+            };
+
+            errorWindow.ShowDialog();
         }
     }
 

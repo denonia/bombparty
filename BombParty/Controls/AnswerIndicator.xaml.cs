@@ -10,10 +10,10 @@ namespace BombParty.Controls
     public partial class AnswerIndicator : UserControl
     {
         public static readonly DependencyProperty IsShownProperty =
-            DependencyProperty.RegisterAttached("IsShown", typeof(bool), typeof(AnswerIndicator), new PropertyMetadata(false));
+            DependencyProperty.Register("IsShown", typeof(bool), typeof(AnswerIndicator), new PropertyMetadata(false));
 
         public static readonly DependencyProperty FillProperty =
-            DependencyProperty.RegisterAttached("Fill", typeof(Brush), typeof(AnswerIndicator), 
+            DependencyProperty.Register("Fill", typeof(Brush), typeof(AnswerIndicator), 
                 new PropertyMetadata(new SolidColorBrush(Color.FromRgb(255, 0, 0))));
 
         public AnswerIndicator()

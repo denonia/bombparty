@@ -44,7 +44,7 @@ namespace BombParty.ViewModels.Game
             SendChatMessageCommand = new SendChatMessageCommand(this, _gameService);
             LeaveRoomCommand = new LeaveRoomCommand(_gameService, lobbyNavService);
 
-            _progressTimer = new Timer(100);
+            _progressTimer = new Timer(10);
             _progressTimer.Elapsed += OnProgressTimerTick;
             _progressTimer.Start();
         }
@@ -119,6 +119,8 @@ namespace BombParty.ViewModels.Game
 
                 _audioService.PlayGameOver();
             }
+            else
+                WriteChatLine($"Game over.");
         }
 
         private void OnHealthChanged(string userId, int newHealth)
