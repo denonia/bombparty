@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\English.txt.gz" />
+    <None Remove="Resources\Polish.txt.gz" />
     <None Remove="Resources\Ukrainian.txt.gz" />
   </ItemGroup>
 
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\English.txt.gz" />
+    <EmbeddedResource Include="Resources\Polish.txt.gz" />
     <EmbeddedResource Include="Resources\Ukrainian.txt.gz" />
   </ItemGroup>
 

@@ -24,6 +24,7 @@ namespace BombParty
         [
             new GameDictionary(DictionaryLanguage.English, "English.txt.gz", "English"),
             new GameDictionary(DictionaryLanguage.Ukrainian, "Ukrainian.txt.gz", "Українська"),
+            new GameDictionary(DictionaryLanguage.Polish, "Polish.txt.gz", "Polski"),
         ];
     }
 }

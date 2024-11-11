@@ -3,6 +3,7 @@
     public enum DictionaryLanguage
     {
         English,
-        Ukrainian
+        Ukrainian,
+        Polish
     }
 }
