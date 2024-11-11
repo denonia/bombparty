@@ -16,7 +16,7 @@ namespace BombParty.Server.Models
 
             _players.Add(owner);
 
-            Game = new Game(this, _players, Settings, dictionary);
+            Game = new Game(this, dictionary);
             Game.OnRoundStart += OnGameRoundStart;
             Game.OnGameOver += OnGameGameOver;
             Game.OnHealthChanged += OnGameHealthChanged;
@@ -26,7 +26,7 @@ namespace BombParty.Server.Models
         public event Action<string>? OnGameOver;
         public event Action<string, string, int>? OnHealthChanged;
 
-        public IEnumerable<Player> Players => _players;
+        public IList<Player> Players => _players;
         public Player Owner => _players.Single(p => p.Id == OwnerId);
 
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -42,17 +42,15 @@ namespace BombParty.Server.Models
 
         public void StartGame()
         {
-            //Game = new Game(this, _players, Settings);
-
             Game.Start();
         }
 
-        public bool AuthenticatePlayer(Player player, string? password)
+        public bool AddPlayer(Player player, string? password)
         {
             if (RequiresPassword && password != Password)
                 return false;
 
-            player.HealthPoints = Game.Settings.StartHealthPoints;
+            player.HealthPoints = Settings.StartHealthPoints;
 
             _players.Add(player);
             return true;

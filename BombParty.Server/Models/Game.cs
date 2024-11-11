@@ -8,18 +8,14 @@ namespace BombParty.Server.Models
     {
         private readonly WordDictionary _dictionary;
 
-        private List<Player> _players = new();
-
         private int _currentPlayer = -1;
         private List<string> _usedWords = new();
         private string _currentCombination = string.Empty;
         private Timer _timeoutTimer = new();
 
-        public Game(Room room, List<Player> players, RoomSettings settings, WordDictionary dictionary)
+        public Game(Room room, WordDictionary dictionary)
         {
-            _players = players;
             Room = room;
-            Settings = settings;
 
             _dictionary = dictionary;
 
@@ -30,10 +26,11 @@ namespace BombParty.Server.Models
         public event Action? OnGameOver;
         public event Action<string, int>? OnHealthChanged;
 
-        public Room Room { get; }
-        public RoomSettings Settings { get; }
         public bool Started { get; set; }
-        public Player CurrentPlayer => _players[_currentPlayer];
+
+        public Room Room { get; }
+        public IList<Player> Players => Room.Players;
+        public Player CurrentPlayer => Players[_currentPlayer];
 
         public void Start()
         {
@@ -41,12 +38,12 @@ namespace BombParty.Server.Models
 
             _usedWords.Clear();
             _currentPlayer = -1;
-            _timeoutTimer.Interval = Settings.RoundTime * 1000;
+            _timeoutTimer.Interval = Room.Settings.RoundTime * 1000;
             _timeoutTimer.Enabled = true;
 
-            foreach (var player in _players)
+            foreach (var player in Players)
             {
-                player.HealthPoints = Settings.StartHealthPoints;
+                player.HealthPoints = Room.Settings.StartHealthPoints;
                 OnHealthChanged?.Invoke(player.Id, player.HealthPoints);
             }
 
@@ -61,36 +58,29 @@ namespace BombParty.Server.Models
             OnGameOver?.Invoke();
         }
 
-        private void OnRoundTimeout(object? source, ElapsedEventArgs e)
-        {
-            var player = _players[_currentPlayer];
-
-            player.Damage();
-            OnHealthChanged?.Invoke(player.Id, player.HealthPoints);
-
-            NextRound();
-        }
-
         private void NextPlayer()
         {
             do
             {
-                _currentPlayer = (_currentPlayer + 1) % _players.Count;
+                _currentPlayer = (_currentPlayer + 1) % Players.Count;
             }
             while (!CurrentPlayer.Alive);
         }
 
         public void NextRound()
         {
+            if (!Started)
+                return;
+
             _timeoutTimer.Stop();
 
             // End the game if:
             // 1. There are no players left.
             // 2. If there is only one player and they're dead.
             // 3. If there are 2+ players and everyone but one is dead.
-            if (_players.Count == 0 
-                || _players.Count == 1 && _players.All(p => !p.Alive)
-                || _players.Count > 1 && _players.Count(p => p.Alive) == 1)
+            if (Players.Count == 0 
+                || Players.Count == 1 && Players.All(p => !p.Alive)
+                || Players.Count > 1 && Players.Count(p => p.Alive) == 1)
             {
                 End();
                 return;
@@ -101,28 +91,34 @@ namespace BombParty.Server.Models
             NextPlayer();
             _currentCombination = _dictionary.GetRandomCombination();
 
-            //_logger.LogInformation("New round {}", _currentCombination);
-
-            OnRoundStart?.Invoke(_players[_currentPlayer].Id, _currentCombination);
+            OnRoundStart?.Invoke(Players[_currentPlayer].Id, _currentCombination);
         }
 
         public bool SubmitAnswer(string userId, string answer)
         {
-            var player = _players[_currentPlayer];
+            var player = Players[_currentPlayer];
             if (player.Id != userId)
                 return false;
 
             var right = answer.Contains(_currentCombination) && _dictionary.Contains(answer) && !_usedWords.Contains(answer);
 
-            //if (right)
-            //    _logger.LogInformation("{} has submitted the right answer: {}", player.DisplayName, answer);
-            //else
-            //    _logger.LogInformation("{} has submitted the wrong answer: {}", player.DisplayName, answer);
-
             if (right)
+            {
                 _usedWords.Add(answer);
+                NextRound();
+            }
 
             return right;
+        }
+
+        private void OnRoundTimeout(object? source, ElapsedEventArgs e)
+        {
+            var player = Players[_currentPlayer];
+
+            player.Damage();
+            OnHealthChanged?.Invoke(player.Id, player.HealthPoints);
+
+            NextRound();
         }
 
         public void Dispose()
