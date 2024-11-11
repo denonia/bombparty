@@ -1,4 +1,5 @@
 ﻿using BombParty.Common;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
@@ -6,15 +7,30 @@ namespace BombParty.Services
 {
     public class SettingsStore
     {
-        private const string SettingsPath = "settings.json";
+        private string _settingsDir;
+        private string _settingsPath;
 
         private Settings _settings;
 
         public SettingsStore()
         {
-            if (File.Exists(SettingsPath))
+            _settingsDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BombParty");
+
+            _settingsPath = Path.Combine(_settingsDir,
+#if DEBUG
+                "settings-debug.json"
+#elif RELEASE
+                "settings.json"
+#endif
+                );
+
+            if (!Directory.Exists(_settingsDir))
+                Directory.CreateDirectory(_settingsDir);
+
+            if (File.Exists(_settingsPath))
             {
-                using var stream = File.OpenRead(SettingsPath);
+                using var stream = File.OpenRead(_settingsPath);
                 _settings = JsonSerializer.Deserialize<Settings>(stream);
             }
             else
@@ -31,7 +47,7 @@ namespace BombParty.Services
                 _settings = value;
 
                 var data = JsonSerializer.Serialize(_settings);
-                File.WriteAllText(SettingsPath, data);
+                File.WriteAllText(_settingsPath, data);
             }
         }
 
@@ -39,7 +55,13 @@ namespace BombParty.Services
         {
             var settings = new Settings
             {
+                PlayerSettings = new PlayerSettings(),
+
+#if DEBUG
                 ServerAddress = "https://localhost:7173"
+#elif RELEASE
+                ServerAddress = "https://party.allein.xyz"
+#endif
             };
 
             Settings = settings;

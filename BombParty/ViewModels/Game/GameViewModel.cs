@@ -13,6 +13,7 @@ namespace BombParty.ViewModels.Game
     {
         private readonly SynchronizationContext _synchronizationContext;
         private readonly GameService _gameService;
+        private readonly AudioService _audioService;
 
         private bool _isTurn;
         private string _currentCombination;
@@ -23,10 +24,12 @@ namespace BombParty.ViewModels.Game
         private Timer _progressTimer;
 
         public GameViewModel(SynchronizationContext synchronizationContext, 
-            GameService gameService, NavigationService<LobbyViewModel> lobbyNavService)
+            GameService gameService, AudioService audioService,
+            NavigationService<LobbyViewModel> lobbyNavService)
         {
             _synchronizationContext = synchronizationContext;
             _gameService = gameService;
+            _audioService = audioService;
             _gameService.OnRoundStart += OnRoundStart;
             _gameService.OnGameOver += OnGameOver;
             _gameService.OnHealthChanged += OnHealthChanged;
@@ -101,11 +104,21 @@ namespace BombParty.ViewModels.Game
 
             CurrentCombination = currentCombination;
             _roundStartTime = DateTime.Now;
+
+            _audioService.Stop();
         }
 
         private void OnGameOver()
         {
-            MessageBox.Show("Game over!", "gg");
+            // No need to show the winner if we are the only player in lobby
+            if (Players.Count(p => !p.IsDead) == 1)
+            {
+                var winner = Players.Single(p => !p.IsDead);
+
+                WriteChatLine($"{winner.DisplayName} is the winner! King gg");
+
+                _audioService.PlayGameOver();
+            }
         }
 
         private void OnHealthChanged(string userId, int newHealth)
@@ -115,10 +128,7 @@ namespace BombParty.ViewModels.Game
 
         private void OnChatMessage(string senderName, string text)
         {
-            if (string.IsNullOrEmpty(ChatHistory))
-                ChatHistory += $"{senderName}: {text}";
-            else
-                ChatHistory += $"{Environment.NewLine}{senderName}: {text}";
+            WriteChatLine($"{senderName}: {text}");
         }
 
         private void OnUserJoined(Player player)
@@ -161,6 +171,14 @@ namespace BombParty.ViewModels.Game
                 player.ShowGreen();
             else
                 player.ShowRed();
+        }
+
+        private void WriteChatLine(string text)
+        {
+            if (string.IsNullOrEmpty(ChatHistory))
+                ChatHistory += $"{text}";
+            else
+                ChatHistory += $"{Environment.NewLine}{text}";
         }
 
         private void OnProgressTimerTick(object? sender, System.Timers.ElapsedEventArgs e)

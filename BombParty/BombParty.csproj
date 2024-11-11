@@ -6,19 +6,26 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>bomb.ico</ApplicationIcon>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\avatar-1.jpg" />
-    <None Remove="Images\avatar-2.jpg" />
-    <None Remove="Images\avatar-3.jpg" />
-    <None Remove="Images\avatar-4.jpg" />
-    <None Remove="Images\avatar-5.jpg" />
-    <None Remove="Images\avatar-6.jpg" />
-    <None Remove="Images\avatar-7.jpg" />
-    <None Remove="Images\avatar-8.jpg" />
-    <None Remove="Images\bomb.png" />
-    <None Remove="Images\goofy.png" />
+    <None Remove="Resources\avatar-1.jpg" />
+    <None Remove="Resources\avatar-2.jpg" />
+    <None Remove="Resources\avatar-3.jpg" />
+    <None Remove="Resources\avatar-4.jpg" />
+    <None Remove="Resources\avatar-5.jpg" />
+    <None Remove="Resources\avatar-6.jpg" />
+    <None Remove="Resources\avatar-7.jpg" />
+    <None Remove="Resources\avatar-8.jpg" />
+    <None Remove="Resources\bomb.png" />
+    <None Remove="Resources\goofy.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bomb.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,16 +38,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\avatar-1.jpg" />
-    <Resource Include="Images\avatar-2.jpg" />
-    <Resource Include="Images\avatar-3.jpg" />
-    <Resource Include="Images\avatar-4.jpg" />
-    <Resource Include="Images\avatar-5.jpg" />
-    <Resource Include="Images\avatar-6.jpg" />
-    <Resource Include="Images\avatar-7.jpg" />
-    <Resource Include="Images\avatar-8.jpg" />
-    <Resource Include="Images\bomb.png" />
-    <Resource Include="Images\goofy.png" />
+    <Resource Include="Resources\avatar-1.jpg" />
+    <Resource Include="Resources\avatar-2.jpg" />
+    <Resource Include="Resources\avatar-3.jpg" />
+    <Resource Include="Resources\avatar-4.jpg" />
+    <Resource Include="Resources\avatar-5.jpg" />
+    <Resource Include="Resources\avatar-6.jpg" />
+    <Resource Include="Resources\avatar-7.jpg" />
+    <Resource Include="Resources\avatar-8.jpg" />
+    <Resource Include="Resources\bomb.png" />
+    <Resource Include="Resources\goofy.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

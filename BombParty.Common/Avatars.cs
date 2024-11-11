@@ -22,7 +22,7 @@
         {
             foreach (var i in Enumerable.Range(1, AvailableAvatarCount))
             {
-                AvailableAvatars.Add(new Avatar(i, $"Images\\avatar-{i}.jpg"));
+                AvailableAvatars.Add(new Avatar(i, $"Resources\\avatar-{i}.jpg"));
             }
         }
 

@@ -46,8 +46,14 @@ namespace BombParty.ViewModels.Game
         public int HealthPoints
         {
             get => _healthPoints;
-            set => SetField(ref _healthPoints, value);
+            set  
+            {
+                SetField(ref _healthPoints, value);
+                OnPropertyChanged(nameof(IsDead));
+            }
         }
+
+        public bool IsDead => HealthPoints <= 0;
 
         public bool IsTurn
         {
