@@ -1,6 +1,5 @@
 ﻿using BombParty.Services;
 using BombParty.ViewModels.Game;
-using System.Windows.Input;
 
 namespace BombParty.Commands
 {
@@ -17,8 +16,11 @@ namespace BombParty.Commands
 
         public override void Execute(object? parameter)
         {
-            _gameService.SendChatMessage(_gameViewModel.ChatInput).ConfigureAwait(false);
-            _gameViewModel.ChatInput = "";
+            if (!string.IsNullOrEmpty(_gameViewModel.ChatInput))
+            {
+                _gameService.SendChatMessage(_gameViewModel.ChatInput).ConfigureAwait(false);
+                _gameViewModel.ChatInput = "";
+            }
         }
     }
 }

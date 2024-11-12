@@ -75,8 +75,12 @@ namespace BombParty.ViewModels.Game
             set
             {
                 SetField(ref _input, value);
-                Players.Single(p => p.Id == _gameService.ConnectionId).Input = value;
-                _gameService.SetInput(value).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    Players.Single(p => p.Id == _gameService.ConnectionId).Input = value;
+                    _gameService.SetInput(value).ConfigureAwait(false);
+                }
             }
         }
 
