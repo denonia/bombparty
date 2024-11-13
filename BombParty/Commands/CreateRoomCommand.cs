@@ -19,6 +19,8 @@ namespace BombParty.Commands
             _viewModel = viewModel;
             _gameService = gameService;
             _gameNavService = gameNavService;
+
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
         public override void Execute(object? parameter)
@@ -38,6 +40,11 @@ namespace BombParty.Commands
             _gameService.CreateRoom(dto).Wait();
         }
 
+        public override bool CanExecute(object? parameter)
+        {
+            return base.CanExecute(parameter) && !_viewModel.HasErrors;
+        }
+
         private void OnReceiveJoinResult(bool success)
         {
             if (success)
@@ -46,8 +53,20 @@ namespace BombParty.Commands
                 MessageBox.Show("Failed to create room.", "Error");
         }
 
+        private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(CreateRoomViewModel.Name)
+                or nameof(CreateRoomViewModel.StartHealthPoints)
+                or nameof(CreateRoomViewModel.RoundTime))
+            {
+                OnCanExecuteChanged();
+            }
+        }
+
         public void Dispose()
         {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+
             _gameService.OnJoinRoomResult -= OnReceiveJoinResult;
         }
     }
