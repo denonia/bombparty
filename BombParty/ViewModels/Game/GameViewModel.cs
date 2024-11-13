@@ -3,9 +3,7 @@ using BombParty.Common;
 using BombParty.Services;
 using BombParty.ViewModels.Lobby;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
-using Timer = System.Timers.Timer;
 
 namespace BombParty.ViewModels.Game
 {
@@ -21,9 +19,8 @@ namespace BombParty.ViewModels.Game
         private string _chatHistory;
         private string _chatInput;
         private DateTime _roundStartTime;
-        private Timer _progressTimer;
 
-        public GameViewModel(SynchronizationContext synchronizationContext, 
+        public GameViewModel(SynchronizationContext synchronizationContext,
             GameService gameService, AudioService audioService,
             NavigationService<LobbyViewModel> lobbyNavService)
         {
@@ -43,10 +40,6 @@ namespace BombParty.ViewModels.Game
             SubmitAnswerCommand = new SubmitAnswerCommand(this, _gameService);
             SendChatMessageCommand = new SendChatMessageCommand(this, _gameService);
             LeaveRoomCommand = new LeaveRoomCommand(_gameService, lobbyNavService);
-
-            _progressTimer = new Timer(10);
-            _progressTimer.Elapsed += OnProgressTimerTick;
-            _progressTimer.Start();
         }
 
         public ICommand SubmitAnswerCommand { get; }
@@ -55,7 +48,17 @@ namespace BombParty.ViewModels.Game
 
         public ObservableCollection<PlayerViewModel> Players { get; set; } = new();
 
-        public int RoundProgress => 100 - (int)((DateTime.Now - _roundStartTime).TotalMilliseconds / (_gameService.RoomSettings.RoundTime * 1000.0) * 100.0);
+        public int RoundProgress 
+        {
+            get
+            {
+                Task.Delay(10).ContinueWith(_ => OnPropertyChanged(nameof(RoundProgress)));
+
+                var elapsedMs = (DateTime.Now - _roundStartTime).TotalMilliseconds;
+                var roundTimeMs = _gameService.RoomSettings.RoundTime * 1000.0;
+                return 100 - (int) (elapsedMs / roundTimeMs * 100.0);
+            }
+        }
 
         public bool IsTurn
         {
@@ -187,11 +190,6 @@ namespace BombParty.ViewModels.Game
                 ChatHistory += $"{Environment.NewLine}{text}";
         }
 
-        private void OnProgressTimerTick(object? sender, System.Timers.ElapsedEventArgs e)
-        {
-            OnPropertyChanged(nameof(RoundProgress));
-        }
-
         public override void Dispose()
         {
             _gameService.OnRoundStart -= OnRoundStart;
@@ -203,8 +201,6 @@ namespace BombParty.ViewModels.Game
             _gameService.OnUserLeft -= OnUserLeft;
             _gameService.OnUserTyping -= OnUserTyping;
             _gameService.OnAnswerSubmitted -= OnAnswerSubmitted;
-
-            _progressTimer.Elapsed -= OnProgressTimerTick;
         }
     }
 }
