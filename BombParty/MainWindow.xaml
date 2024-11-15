@@ -7,9 +7,9 @@
         xmlns:vms="clr-namespace:BombParty.ViewModels"
         xmlns:lobby="clr-namespace:BombParty.ViewModels.Lobby"
         xmlns:game="clr-namespace:BombParty.ViewModels.Game"
-        xmlns:views="clr-namespace:BombParty.Views"
+        xmlns:views="clr-namespace:BombParty.Views" xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
-        FontFamily="{StaticResource Roboto}"
+        Style="{DynamicResource WindowStyle}"
         Title="Bomb Party" Height="450" Width="800">
     <Grid>
         <Grid.Resources>
@@ -30,7 +30,16 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <ContentControl Content="{Binding CurrentViewModel}"/>
-        <!--<views:GameView/>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Command="{Binding SwitchThemeCommand}" Margin="10 5 5 0" Padding="10" HorizontalAlignment="Left">
+            <Button.Content>
+                <fa5:ImageAwesome Icon="Regular_Lightbulb" Width="10" Foreground="Black"/>
+            </Button.Content>
+        </Button>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

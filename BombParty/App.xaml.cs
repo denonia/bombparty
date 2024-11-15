@@ -22,6 +22,7 @@ namespace BombParty
         protected override void OnStartup(StartupEventArgs e)
         {
             var services = new ServiceCollection()
+                .AddSingleton(Application.Current)
                 .AddSingleton(SynchronizationContext.Current!)
                 .AddStores()
                 .AddServices()
@@ -46,6 +47,9 @@ namespace BombParty
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            if (Current.MainWindow is null)
+                return;
+
             e.Handled = true;
 
             var errorWindow = new ErrorWindow()

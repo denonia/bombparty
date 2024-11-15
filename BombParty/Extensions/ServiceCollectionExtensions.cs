@@ -21,6 +21,7 @@ namespace BombParty.Extensions
         {
             services
                 .AddSingleton<GameService>()
+                .AddSingleton<ThemeService>()
                 .AddSingleton<PasswordEntryService>()
                 .AddSingleton<AudioService>();
 
