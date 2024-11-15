@@ -9,6 +9,7 @@
         xmlns:game="clr-namespace:BombParty.ViewModels.Game"
         xmlns:views="clr-namespace:BombParty.Views"
         mc:Ignorable="d"
+        FontFamily="{StaticResource Roboto}"
         Title="Bomb Party" Height="450" Width="800">
     <Grid>
         <Grid.Resources>

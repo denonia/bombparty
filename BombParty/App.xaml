@@ -19,6 +19,8 @@
                     </Image.Source>
                 </Image>
             </DataTemplate>
+
+            <FontFamily x:Key="Roboto">Resources\Fonts\#Roboto</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
