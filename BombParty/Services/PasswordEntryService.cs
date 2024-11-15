@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace BombParty.Services
 {
-    public class PasswordEntryService
+    public class PasswordEntryService : IPasswordEntryService
     {
         public string PromptPassword()
         {

@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace BombParty.Services
 {
-    public class SettingsStore
+    public class SettingsStore : ISettingsStore
     {
         private string _settingsDir;
         private string _settingsPath;

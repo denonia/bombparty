@@ -5,10 +5,10 @@ namespace BombParty.Commands
 {
     public class SubmitAnswerCommand : BaseCommand
     {
-        private readonly GameService _gameService;
+        private readonly IGameService _gameService;
         private readonly GameViewModel _gameViewModel;
 
-        public SubmitAnswerCommand(GameViewModel gameViewModel, GameService gameService)
+        public SubmitAnswerCommand(GameViewModel gameViewModel, IGameService gameService)
         {
             _gameService = gameService;
             _gameViewModel = gameViewModel;

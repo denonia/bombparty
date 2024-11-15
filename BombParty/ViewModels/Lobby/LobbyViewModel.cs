@@ -8,14 +8,14 @@ namespace BombParty.ViewModels.Lobby
 {
     public class LobbyViewModel : BaseViewModel, IDisposable
     {
-        private readonly GameService _gameService;
+        private readonly IGameService _gameService;
         private readonly SynchronizationContext _synchronizationContext;
 
-        public LobbyViewModel(GameService gameService,
-            PasswordEntryService passwordEntryService,
-            NavigationService<CreateRoomViewModel> createRoomNavService,
-            NavigationService<SettingsViewModel> settingsNavService,
-            NavigationService<GameViewModel> gameNavService,
+        public LobbyViewModel(IGameService gameService,
+            IPasswordEntryService passwordEntryService,
+            INavigationService<CreateRoomViewModel> createRoomNavService,
+            INavigationService<SettingsViewModel> settingsNavService,
+            INavigationService<GameViewModel> gameNavService,
             SynchronizationContext synchronizationContext)
         {
             _gameService = gameService;

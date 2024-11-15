@@ -10,8 +10,8 @@ namespace BombParty.ViewModels.Game
     public class GameViewModel : BaseViewModel
     {
         private readonly SynchronizationContext _synchronizationContext;
-        private readonly GameService _gameService;
-        private readonly AudioService _audioService;
+        private readonly IGameService _gameService;
+        private readonly IAudioService _audioService;
 
         private bool _isTurn;
         private string _currentCombination;
@@ -21,8 +21,8 @@ namespace BombParty.ViewModels.Game
         private DateTime _roundStartTime;
 
         public GameViewModel(SynchronizationContext synchronizationContext,
-            GameService gameService, AudioService audioService,
-            NavigationService<LobbyViewModel> lobbyNavService)
+            IGameService gameService, IAudioService audioService,
+            INavigationService<LobbyViewModel> lobbyNavService)
         {
             _synchronizationContext = synchronizationContext;
             _gameService = gameService;

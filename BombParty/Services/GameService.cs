@@ -6,13 +6,13 @@ using System.Windows;
 
 namespace BombParty.Services
 {
-    public class GameService : IGameClient
+    public class GameService : IGameClient, IGameService
     {
         private readonly HubConnection _hubConnection;
 
         private List<Player> _players = new();
 
-        public GameService(SettingsStore settingsStore)
+        public GameService(ISettingsStore settingsStore)
         {
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{settingsStore.Settings.ServerAddress}/game-hub")

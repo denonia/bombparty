@@ -11,8 +11,8 @@ namespace BombParty.ViewModels
         private string _name;
         private Avatar _avatar;
         
-        public SettingsViewModel(SettingsStore settingsStore, GameService gameService, 
-            NavigationService<LobbyViewModel> lobbyNavService)
+        public SettingsViewModel(ISettingsStore settingsStore, IGameService gameService, 
+            INavigationService<LobbyViewModel> lobbyNavService)
         {
             SubmitCommand = new ChangeSettingsCommand(this, settingsStore, gameService, lobbyNavService);
 

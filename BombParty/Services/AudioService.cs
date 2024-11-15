@@ -3,7 +3,7 @@ using System.Media;
 
 namespace BombParty.Services
 {
-    public class AudioService
+    public class AudioService : IAudioService
     {
         private readonly SoundPlayer gameOverPlayer = new SoundPlayer();
 

@@ -6,11 +6,11 @@ namespace BombParty.Commands
 {
     public class LeaveRoomCommand : BaseCommand
     {
-        private readonly GameService _gameService;
-        private readonly NavigationService<LobbyViewModel> _lobbyNavService;
+        private readonly IGameService _gameService;
+        private readonly INavigationService<LobbyViewModel> _lobbyNavService;
 
-        public LeaveRoomCommand(GameService gameService, 
-            NavigationService<LobbyViewModel> lobbyNavService)
+        public LeaveRoomCommand(IGameService gameService, 
+            INavigationService<LobbyViewModel> lobbyNavService)
         {
             _gameService = gameService;
             _lobbyNavService = lobbyNavService;
@@ -18,7 +18,7 @@ namespace BombParty.Commands
 
         public override void Execute(object? parameter)
         {
-            _gameService.LeaveRoom().ConfigureAwait(false);
+            Task.Run(_gameService.LeaveRoom);
 
             _lobbyNavService.Navigate();
         }

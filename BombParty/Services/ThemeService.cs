@@ -3,12 +3,12 @@ using System.Windows;
 
 namespace BombParty.Services
 {
-    public class ThemeService
+    public class ThemeService : IThemeService
     {
         private readonly ResourceDictionary _resources;
-        private readonly SettingsStore _settingsStore;
+        private readonly ISettingsStore _settingsStore;
 
-        public ThemeService(Application application, SettingsStore settingsStore)
+        public ThemeService(Application application, ISettingsStore settingsStore)
         {
             _resources = application.Resources;
             _settingsStore = settingsStore;

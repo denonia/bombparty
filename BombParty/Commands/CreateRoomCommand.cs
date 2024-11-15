@@ -10,11 +10,11 @@ namespace BombParty.Commands
     public class CreateRoomCommand : BaseCommand, IDisposable
     {
         private readonly CreateRoomViewModel _viewModel;
-        private readonly GameService _gameService;
-        private readonly NavigationService<GameViewModel> _gameNavService;
+        private readonly IGameService _gameService;
+        private readonly INavigationService<GameViewModel> _gameNavService;
 
-        public CreateRoomCommand(CreateRoomViewModel viewModel, GameService gameService, 
-            NavigationService<GameViewModel> gameNavService)
+        public CreateRoomCommand(CreateRoomViewModel viewModel, IGameService gameService, 
+            INavigationService<GameViewModel> gameNavService)
         {
             _viewModel = viewModel;
             _gameService = gameService;

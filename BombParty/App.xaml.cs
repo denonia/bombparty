@@ -29,13 +29,16 @@ namespace BombParty
                 .AddViewModels()
                 .BuildServiceProvider();
 
-            services.GetRequiredService<NavigationService<LobbyViewModel>>().Navigate();
+            services.GetRequiredService<INavigationService<LobbyViewModel>>().Navigate();
 
-            var gameService = services.GetRequiredService<GameService>();
-            gameService.ConnectAsync().ConfigureAwait(false);
+            var gameService = services.GetRequiredService<IGameService>();
+            var settingsStore = services.GetRequiredService<ISettingsStore>();
 
-            var settingsStore = services.GetRequiredService<SettingsStore>();
-            gameService.UpdateSettings(settingsStore.Settings.PlayerSettings).ConfigureAwait(false);
+            Task.Run(async () =>
+            {
+                await gameService.ConnectAsync();
+                await gameService.UpdateSettings(settingsStore.Settings.PlayerSettings);
+            });
 
             var mainWindow = new MainWindow
             {

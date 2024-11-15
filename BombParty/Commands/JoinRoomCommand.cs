@@ -8,13 +8,13 @@ namespace BombParty.Commands
     public class JoinRoomCommand : BaseCommand, IDisposable
     {
         private readonly LobbyViewModel _viewModel;
-        private readonly GameService _gameService;
-        private readonly PasswordEntryService _passwordEntryService;
-        private readonly NavigationService<GameViewModel> _gameNavService;
+        private readonly IGameService _gameService;
+        private readonly IPasswordEntryService _passwordEntryService;
+        private readonly INavigationService<GameViewModel> _gameNavService;
 
-        public JoinRoomCommand(LobbyViewModel viewModel, GameService gameService, 
-            PasswordEntryService passwordEntryService,
-            NavigationService<GameViewModel> gameNavService)
+        public JoinRoomCommand(LobbyViewModel viewModel, IGameService gameService, 
+            IPasswordEntryService passwordEntryService,
+            INavigationService<GameViewModel> gameNavService)
         {
             _viewModel = viewModel;
             _gameService = gameService;

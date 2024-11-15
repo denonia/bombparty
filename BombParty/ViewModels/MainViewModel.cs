@@ -6,10 +6,10 @@ namespace BombParty.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly NavigationStore _navigationStore;
-        private readonly ThemeService _themeService;
+        private readonly INavigationStore _navigationStore;
+        private readonly IThemeService _themeService;
 
-        public MainViewModel(NavigationStore navigationStore, ThemeService themeService)
+        public MainViewModel(INavigationStore navigationStore, IThemeService themeService)
         {
             _navigationStore = navigationStore;
             _themeService = themeService;

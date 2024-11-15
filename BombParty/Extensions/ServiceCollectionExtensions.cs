@@ -11,8 +11,8 @@ namespace BombParty.Extensions
         public static IServiceCollection AddStores(this IServiceCollection services)
         {
             services
-                .AddSingleton<SettingsStore>()
-                .AddSingleton<NavigationStore>();
+                .AddSingleton<ISettingsStore, SettingsStore>()
+                .AddSingleton<INavigationStore, NavigationStore>();
 
             return services;
         }
@@ -20,10 +20,10 @@ namespace BombParty.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services
-                .AddSingleton<GameService>()
-                .AddSingleton<ThemeService>()
-                .AddSingleton<PasswordEntryService>()
-                .AddSingleton<AudioService>();
+                .AddSingleton<IGameService, GameService>()
+                .AddSingleton<IThemeService, ThemeService>()
+                .AddSingleton<IPasswordEntryService, PasswordEntryService>()
+                .AddSingleton<IAudioService, AudioService>();
 
             return services;
         }
@@ -45,7 +45,7 @@ namespace BombParty.Extensions
         {
             services.AddTransient<T>();
             services.AddSingleton<Func<T>>(s => s.GetRequiredService<T>);
-            services.AddSingleton<NavigationService<T>>();
+            services.AddSingleton<INavigationService<T>, NavigationService<T>>();
 
             return services;
         }

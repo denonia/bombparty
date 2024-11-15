@@ -5,10 +5,10 @@ namespace BombParty.Commands
 {
     public class SendChatMessageCommand : BaseCommand
     {
-        private readonly GameService _gameService;
+        private readonly IGameService _gameService;
         private readonly GameViewModel _gameViewModel;
 
-        public SendChatMessageCommand(GameViewModel gameViewModel, GameService gameService)
+        public SendChatMessageCommand(GameViewModel gameViewModel, IGameService gameService)
         {
             _gameService = gameService;
             _gameViewModel = gameViewModel;

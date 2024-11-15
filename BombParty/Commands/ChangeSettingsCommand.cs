@@ -8,12 +8,12 @@ namespace BombParty.Commands
     public class ChangeSettingsCommand : BaseCommand
     {
         private readonly SettingsViewModel _viewModel;
-        private readonly SettingsStore _settingsStore;
-        private readonly GameService _gameService;
-        private readonly NavigationService<LobbyViewModel> _lobbyNavService;
+        private readonly ISettingsStore _settingsStore;
+        private readonly IGameService _gameService;
+        private readonly INavigationService<LobbyViewModel> _lobbyNavService;
 
-        public ChangeSettingsCommand(SettingsViewModel viewModel, SettingsStore settingsStore,
-            GameService gameService, NavigationService<LobbyViewModel> lobbyNavService)
+        public ChangeSettingsCommand(SettingsViewModel viewModel, ISettingsStore settingsStore,
+            IGameService gameService, INavigationService<LobbyViewModel> lobbyNavService)
         {
             _viewModel = viewModel;
             _settingsStore = settingsStore;
@@ -33,7 +33,7 @@ namespace BombParty.Commands
             newSettings.PlayerSettings = newPlayerSettings;
             _settingsStore.Settings = newSettings;
 
-            _gameService.UpdateSettings(newPlayerSettings).ConfigureAwait(false);
+            Task.Run(() => _gameService.UpdateSettings(newPlayerSettings));
             _lobbyNavService.Navigate();
         }
     }

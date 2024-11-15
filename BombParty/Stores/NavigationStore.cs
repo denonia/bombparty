@@ -2,7 +2,7 @@
 
 namespace BombParty.Services
 {
-    public class NavigationStore
+    public class NavigationStore : INavigationStore
     {
         private BaseViewModel? _currentViewModel;
 

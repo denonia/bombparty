@@ -12,17 +12,17 @@ namespace BombParty.ViewModels
     {
         private readonly Dictionary<string, List<string>> _propertyErrors = new();
 
-        private readonly SettingsStore _settingsStore;
+        private readonly ISettingsStore _settingsStore;
         private string _name;
         private string _password = string.Empty;
         private GameDictionary _dictionary = GameDictionaries.Dictionaries.First();
         private int _startHealthPoints = 5;
         private int _roundtime = 5;
 
-        public CreateRoomViewModel(GameService gameService, 
-            SettingsStore settingsStore,
-            NavigationService<LobbyViewModel> lobbyNavService,
-            NavigationService<GameViewModel> gameNavService)
+        public CreateRoomViewModel(IGameService gameService, 
+            ISettingsStore settingsStore,
+            INavigationService<LobbyViewModel> lobbyNavService,
+            INavigationService<GameViewModel> gameNavService)
         {
             _settingsStore = settingsStore;
             _name = (settingsStore.Settings.PlayerSettings.UserName ?? gameService.ConnectionId) + "'s game";
