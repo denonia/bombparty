@@ -50,7 +50,7 @@ namespace BombParty
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            if (Current.MainWindow is null)
+            if (Current.MainWindow is null || !Current.MainWindow.IsVisible)
                 return;
 
             e.Handled = true;

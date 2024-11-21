@@ -10,6 +10,9 @@
         xmlns:views="clr-namespace:BombParty.Views" xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         Style="{DynamicResource WindowStyle}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Loaded="Window_Loaded"
         Title="Bomb Party" Height="450" Width="800">
     <Grid>
         <Grid.Resources>

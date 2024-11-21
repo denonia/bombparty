@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using BombParty.Helpers;
 
 namespace BombParty
 {
@@ -10,6 +11,11 @@ namespace BombParty
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            WindowBlurHelper.EnableBlur(this);
         }
     }
 }

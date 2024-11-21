@@ -39,16 +39,27 @@ namespace BombParty.Services
             _settingsStore.Settings = _settingsStore.Settings with { UseDarkTheme = true };
         }
 
+        private Uri ThemeUri(string name)
+        {
+            return new Uri(Path.Combine("Themes", name), UriKind.Relative);
+        }
+
         private void ApplyTheme(string path)
         {
             _resources.MergedDictionaries.Clear();
 
-            var dictionary = new ResourceDictionary
+            var commonDictionary = new ResourceDictionary
             {
-                Source = new Uri(Path.Combine("Themes", path), UriKind.Relative)
+                Source = ThemeUri("Common.xaml"),
             };
 
-            _resources.MergedDictionaries.Add(dictionary);
+            var themeDictionary = new ResourceDictionary
+            {
+                Source = ThemeUri(path)
+            };
+
+            commonDictionary.MergedDictionaries.Add(themeDictionary);
+            _resources.MergedDictionaries.Add(commonDictionary);
         }
     }
 }
