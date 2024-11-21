@@ -3,6 +3,7 @@ using BombParty.Services;
 using BombParty.ViewModels;
 using BombParty.ViewModels.Lobby;
 using BombParty.Views;
+using BombParty.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Threading;

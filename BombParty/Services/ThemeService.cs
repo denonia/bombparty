@@ -5,6 +5,14 @@ namespace BombParty.Services
 {
     public class ThemeService : IThemeService
     {
+        private static Uri LightThemeUri = ThemeUri("Light.xaml");
+        private static Uri DarkThemeUri = ThemeUri("Dark.xaml");
+
+        private static Uri[] CommonThemeUris = [
+            ThemeUri("Common.xaml"),
+            ThemeUri("Window.xaml"),
+        ];
+
         private readonly ResourceDictionary _resources;
         private readonly ISettingsStore _settingsStore;
 
@@ -29,37 +37,41 @@ namespace BombParty.Services
 
         public void ApplyLightTheme()
         {
-            ApplyTheme("Light.xaml");
+            ApplyTheme(LightThemeUri);
             _settingsStore.Settings = _settingsStore.Settings with { UseDarkTheme = false };
         }
 
         public void ApplyDarkTheme()
         {
-            ApplyTheme("Dark.xaml");
+            ApplyTheme(DarkThemeUri);
             _settingsStore.Settings = _settingsStore.Settings with { UseDarkTheme = true };
         }
 
-        private Uri ThemeUri(string name)
+        private static Uri ThemeUri(string name)
         {
             return new Uri(Path.Combine("Themes", name), UriKind.Relative);
         }
 
-        private void ApplyTheme(string path)
+        private void ApplyTheme(Uri themeUri)
         {
             _resources.MergedDictionaries.Clear();
 
-            var commonDictionary = new ResourceDictionary
+            foreach (var uri in CommonThemeUris)
             {
-                Source = ThemeUri("Common.xaml"),
-            };
+                var dictionary = new ResourceDictionary
+                {
+                    Source = uri
+                };
+
+                _resources.MergedDictionaries.Add(dictionary);
+            }
 
             var themeDictionary = new ResourceDictionary
             {
-                Source = ThemeUri(path)
+                Source = themeUri
             };
 
-            commonDictionary.MergedDictionaries.Add(themeDictionary);
-            _resources.MergedDictionaries.Add(commonDictionary);
+            _resources.MergedDictionaries.Add(themeDictionary);
         }
     }
 }

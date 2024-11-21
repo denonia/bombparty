@@ -1,4 +1,5 @@
-﻿<Window x:Class="BombParty.MainWindow"
+﻿<windows:BaseWindow xmlns:windows="clr-namespace:BombParty.Windows"
+        x:Class="BombParty.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,12 +8,10 @@
         xmlns:vms="clr-namespace:BombParty.ViewModels"
         xmlns:lobby="clr-namespace:BombParty.ViewModels.Lobby"
         xmlns:game="clr-namespace:BombParty.ViewModels.Game"
-        xmlns:views="clr-namespace:BombParty.Views" xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:views="clr-namespace:BombParty.Views" 
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         Style="{DynamicResource WindowStyle}"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Loaded="Window_Loaded"
         Title="Bomb Party" Height="450" Width="800">
     <Grid>
         <Grid.Resources>
@@ -45,4 +44,4 @@
         </Button>
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
     </Grid>
-</Window>
+</windows:BaseWindow>

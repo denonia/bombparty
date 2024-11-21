@@ -1,20 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:converters="clr-namespace:BombParty.Converters">
 
-    <ControlTemplate TargetType="Window" x:Key="WindowTemplate">
-        <Grid>
-            <Border Background="{DynamicResource BackgroundBrush}">
-                <ContentPresenter/>
-            </Border>
-        </Grid>
-    </ControlTemplate>
-
-    <Style TargetType="Window" x:Key="WindowStyle">
-        <Setter Property="FontFamily" Value="{StaticResource Roboto}" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Template" Value="{StaticResource WindowTemplate}">
-        </Setter>
-    </Style>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}" Opacity="0.85" />
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{DynamicResource WindowBorderColor}" Opacity="0.85" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}" />
 
 </ResourceDictionary>
