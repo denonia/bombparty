@@ -4,10 +4,14 @@
     <Color x:Key="BackgroundColor">#FFFFFF</Color>
     <Color x:Key="WindowBorderColor">#D0D0D0</Color>
     <Color x:Key="ForegroundColor">#1E1E1E</Color>
+    <Color x:Key="ActiveColor">#326BD7</Color>
 
     <Color x:Key="ButtonBackgroundColor">#FFFFFF</Color>
     <Color x:Key="ButtonBorderColor">#D5D5D5</Color>
     <Color x:Key="ButtonHoverColor">#E5E5E5</Color>
-    <Color x:Key="ButtonPressColor">#326BD7</Color>
+
+    <Color x:Key="TextBoxBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="TextBoxBorderColor">#D3D3D3</Color>
+    <Color x:Key="TextBoxHoverColor">#F0F0F0</Color>
 
 </ResourceDictionary>

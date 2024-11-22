@@ -17,7 +17,9 @@ namespace BombParty
     {
         public App()
         {
+#if RELEASE
             DispatcherUnhandledException += OnDispatcherUnhandledException;
+#endif
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -49,6 +51,7 @@ namespace BombParty
             mainWindow.Show();
         }
 
+#if RELEASE
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             if (Current.MainWindow is null || !Current.MainWindow.IsVisible)
@@ -64,6 +67,7 @@ namespace BombParty
 
             errorWindow.ShowDialog();
         }
+#endif
     }
 
 }

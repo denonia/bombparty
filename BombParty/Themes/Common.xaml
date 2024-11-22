@@ -5,15 +5,18 @@
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" Opacity="0.95" />
     <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" Opacity="0.85" />
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="ActiveBrush" Color="{StaticResource ActiveColor}" />
 
     <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ButtonBorderColor}" />
-    <SolidColorBrush x:Key="ButtonPressBrush" Color="{StaticResource ButtonPressColor}" />
+
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackgroundColor}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource TextBoxBorderColor}" />
 
     <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
         <Border x:Name="ButtonBorder"
-                BorderBrush="{StaticResource ButtonBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="14,8"
-                TextBlock.Foreground="{StaticResource ForegroundBrush}">
+                TextBlock.Foreground="{TemplateBinding Foreground}"
+                BorderBrush="{StaticResource ButtonBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="14,8">
 
             <Border.Background>
                 <SolidColorBrush Color="{StaticResource ButtonBackgroundColor}"/>
@@ -53,14 +56,79 @@
 
             <Trigger Property="IsPressed" Value="True">
                 <Setter TargetName="ButtonBorder" Property="Background" 
-                        Value="{StaticResource ButtonPressBrush}" />
+                        Value="{StaticResource ActiveBrush}" />
                 <Setter TargetName="ButtonBorder" Property="TextBlock.Foreground" 
                         Value="White" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate TargetType="TextBox" x:Key="TextBoxTemplate">
+        <Border Name="TextBoxSelectBorder" BorderThickness="4" CornerRadius="8">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{StaticResource ActiveColor}" Opacity="0"/>
+            </Border.BorderBrush>
+
+            <Border.Background>
+                <SolidColorBrush Color="{StaticResource TextBoxBackgroundColor}" Opacity="0"/>
+            </Border.Background>
+            
+            <Border Name="TextBoxBorder"
+                BorderBrush="{StaticResource TextBoxBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="14,8">
+                <Border.Background>
+                    <SolidColorBrush Color="{StaticResource TextBoxBackgroundColor}"/>
+                </Border.Background>
+                
+                <ScrollViewer Margin="0"
+                          x:Name="PART_ContentHost" />
+            </Border>
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <ColorAnimation 
+                                        Storyboard.TargetName="TextBoxBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource TextBoxBackgroundColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <ColorAnimation 
+                                        Storyboard.TargetName="TextBoxBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource TextBoxHoverColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+
     <Style TargetType="Button">
         <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
     </Style>
 </ResourceDictionary>
