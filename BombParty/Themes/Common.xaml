@@ -23,16 +23,18 @@
             </Border.Background>
             
             <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Border>
 
-        <ControlTemplate.Resources>
-            <converters:BrushDarkenConverter x:Key="BrushDarkenConverter"/>
-        </ControlTemplate.Resources>
-
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <ColorAnimation 
+                                            Storyboard.TargetName="ButtonBorder"
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <ColorAnimation 
                                             Storyboard.TargetName="ButtonBorder"
@@ -40,20 +42,12 @@
                                             To="{StaticResource ButtonHoverColor}" Duration="0:0:0.2"/>
 
                         </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation 
-                                            Storyboard.TargetName="ButtonBorder"
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                            To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
 
+        <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
                 <Setter TargetName="ButtonBorder" Property="Background" 
                         Value="{StaticResource ActiveBrush}" />
