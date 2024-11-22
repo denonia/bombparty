@@ -21,6 +21,9 @@
     <Color x:Key="ToggleButtonHoverColor">#1E407F</Color>
 
     <Color x:Key="ScrollThumbColor">#C1C1C1</Color>
-    <Color x:Key="ScrollThumbHoverColor">#FFFFFF</Color>
+    <Color x:Key="ScrollThumbHoverColor">#828282</Color>
+
+    <Color x:Key="ProgressBarBackgroundColor">#DBDBDB</Color>
+    <Color x:Key="ProgressBarBorderColor">#C0C0C0</Color>
 
 </ResourceDictionary>

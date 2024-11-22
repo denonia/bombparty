@@ -51,8 +51,8 @@
             <StackPanel Margin="5">
                 <TextBlock Text="{Binding CurrentCombination}" FontSize="24" HorizontalAlignment="Center"/>
 
-                <Image Source="{StaticResource Bomb}" Width="100"/>
-                <ProgressBar Foreground="DarkRed"  Margin="3" Width="200" Height="10" Value="{Binding RoundProgress, Mode=OneWay}"/>
+                <!--<Image Source="{StaticResource Bomb}" Width="100"/>-->
+                <ProgressBar Foreground="#DD0024"  Margin="3" MaxWidth="200" MaxHeight="20" Value="{Binding RoundProgress, Mode=OneWay}"/>
 
                 <TextBox
                          Margin="3" Width="200" 

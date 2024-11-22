@@ -17,6 +17,9 @@
     <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource ComboBoxBorderColor}" />
 
     <SolidColorBrush x:Key="ScrollThumbBrush" Color="{StaticResource ScrollThumbColor}" />
+    
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="{StaticResource ProgressBarBackgroundColor}" />
+    <SolidColorBrush x:Key="ProgressBarBorderBrush" Color="{StaticResource ProgressBarBorderColor}" />
 
     <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
         <Border Name="ButtonSelectBorder" BorderThickness="4" CornerRadius="8">
@@ -405,6 +408,22 @@
         </Grid>
     </ControlTemplate>
 
+    <ControlTemplate TargetType="ProgressBar" x:Key="ProgressBarTemplate">
+        <Grid MinHeight="20" MinWidth="200">
+            <Border x:Name="PART_Track"
+                  CornerRadius="8"
+                  BorderThickness="1"
+                  Background="{StaticResource ProgressBarBackgroundBrush}"
+                  BorderBrush="{StaticResource ProgressBarBorderBrush}">
+                <Border x:Name="PART_Indicator"
+                      CornerRadius="8"
+                      BorderThickness="0"
+                      HorizontalAlignment="Left"
+                      Background="{TemplateBinding Foreground}" />
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
     <Style TargetType="Button">
         <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
@@ -444,5 +463,11 @@
                 <Setter Property="Template" Value="{StaticResource VerticalScrollBarTemplate}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="ProgressBar">
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="MaxHeight" Value="20" />
+        <Setter Property="Template" Value="{StaticResource ProgressBarTemplate}"/>
     </Style>
 </ResourceDictionary>
