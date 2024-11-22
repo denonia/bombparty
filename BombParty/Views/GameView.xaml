@@ -45,11 +45,27 @@
                                 <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="{DynamicResource GameRightAnswerBrush}" />
 
                                 <StackPanel Width="100" Margin="10">
-                                    <Border BorderBrush="{DynamicResource AvatarBorderBrush}" BorderThickness="3" CornerRadius="12" Width="100" Height="100">
-                                        <Border.Background>
-                                            <ImageBrush Stretch="Fill" ImageSource="{Binding Avatar.FileName}"/>
-                                        </Border.Background>
-                                    </Border>
+                                    <Grid>
+                                        <fa5:ImageAwesome Visibility="{Binding IsDead, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                            Icon="Solid_SkullCrossbones" Width="24" Foreground="Black"/>
+                                        
+                                        <Border BorderBrush="{DynamicResource AvatarBorderBrush}"
+                                                BorderThickness="3" CornerRadius="12" Width="100" Height="100">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDead}" Value="True">
+                                                            <Setter Property="Opacity" Value="0.2"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            
+                                            <Border.Background>
+                                                <ImageBrush Stretch="Fill" ImageSource="{Binding Avatar.FileName}"/>
+                                            </Border.Background>
+                                        </Border>
+                                    </Grid>
 
                                     <TextBlock FontWeight="Medium" Text="{Binding DisplayName}" HorizontalAlignment="Center" Margin="0 6 0 0"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 4 0 0">
