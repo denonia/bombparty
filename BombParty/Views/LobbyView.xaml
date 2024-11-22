@@ -7,44 +7,71 @@
              xmlns:local="clr-namespace:BombParty.Views" xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <StackPanel.Resources>
+    <Grid MaxWidth="600">
+        <Grid.Resources>
             <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        </StackPanel.Resources>
-        
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Active rooms" FontSize="32" FontWeight="Medium" Margin="10"/>
-            <Button Command="{Binding CreateRoomCommand}" Content="Create room" Margin="4" />
-            <Button Command="{Binding SettingsCommand}" Content="Settings" Margin="4" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <StackPanel>
+                <TextBlock Text="Active rooms" FontSize="32" FontWeight="Medium" Margin="10"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding CreateRoomCommand}" Content="Create room" Margin="4" />
+                    <Button Command="{Binding SettingsCommand}" Content="Settings" Margin="4" />
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Text="There are no active rooms. yet." Margin="10"
+                Visibility="{Binding LobbyIsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StackPanel>
 
-        <TextBlock Text="There are no active rooms. yet." FontSize="14" Margin="10 0"
-            Visibility="{Binding LobbyIsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Rooms}" Margin="10"
+                Visibility="{Binding LobbyIsEmpty, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverted}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel VerticalAlignment="Stretch" Margin="0 0 20 0" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-        <ListView ItemsSource="{Binding Rooms}" Margin="10"
-            Visibility="{Binding LobbyIsEmpty, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverted}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Title}" FontSize="18"/>
-                                <fa5:ImageAwesome Visibility="{Binding RequiresPassword, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Icon="Solid_Lock" Margin="6" Width="12" Foreground="Black"/>
-                            </StackPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{DynamicResource TextBoxBorderBrush}" 
+                                Background="{DynamicResource TextBoxBackgroundBrush}"
+                                BorderThickness="1" Margin="0 0 0 12" Padding="20" CornerRadius="8">
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding OwnerText}"/>
-                            <TextBlock Text="{Binding PlayerCountText}"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Title}" FontSize="20" FontWeight="Medium"/>
+                                        <fa5:ImageAwesome Visibility="{Binding RequiresPassword, Converter={StaticResource BoolToVisibilityConverter}}"
+                                            Icon="Solid_Lock" Margin="6" Width="12" Foreground="Black"/>
+                                    </StackPanel>
 
-                        <Button 
-                            Command="{Binding DataContext.JoinRoomCommand, ElementName=Root}" 
-                            CommandParameter="{Binding Id}"
-                            Content="Join" Height="24" Padding="8 0" Margin="20 0 0 0"/>
-                    </StackPanel>
+                                    <TextBlock Text="{Binding OwnerText}"/>
+                                    <TextBlock Text="{Binding PlayerCountText}"/>
+                                </StackPanel>
 
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackPanel>
+                                <Button Grid.Column="1" 
+                                    Command="{Binding DataContext.JoinRoomCommand, ElementName=Root}" 
+                                    CommandParameter="{Binding Id}"
+                                    VerticalAlignment="Center"
+                                    Content="Join" Padding="8 0" Margin="20 0 0 0"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

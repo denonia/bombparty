@@ -24,6 +24,9 @@
     <SolidColorBrush x:Key="ProgressBarBorderBrush" Color="{StaticResource ProgressBarBorderColor}" />
 
     <SolidColorBrush x:Key="HealthBarBrush" Color="{StaticResource HealthBarColor}" />
+    <SolidColorBrush x:Key="GameBorderBrush" Color="{StaticResource GameBorderColor}" />
+    <SolidColorBrush x:Key="LobbyRoomBackgroundBrush" Color="{StaticResource LobbyRoomBackgroundColor}" />
+    <SolidColorBrush x:Key="LobbyRoomBorderBrush" Color="{StaticResource LobbyRoomBorderColor}" />
 
     <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
         <Border Name="ButtonSelectBorder" BorderThickness="4" CornerRadius="8">
