@@ -26,4 +26,6 @@
     <Color x:Key="ProgressBarBackgroundColor">#DBDBDB</Color>
     <Color x:Key="ProgressBarBorderColor">#C0C0C0</Color>
 
+    <Color x:Key="HealthBarColor">#DC143C</Color>
+
 </ResourceDictionary>

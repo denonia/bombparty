@@ -1,10 +1,16 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace BombParty.Controls
 {
     public class ChatTextBox : TextBox
     {
         public bool AtBottom => VerticalOffset + ViewportHeight >= ExtentHeight - 1;
+
+        static ChatTextBox()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChatTextBox), new FrameworkPropertyMetadata(typeof(ChatTextBox)));
+        }
 
         protected override void OnInitialized(EventArgs e)
         {

@@ -52,7 +52,8 @@
                 <TextBlock Text="{Binding CurrentCombination}" FontSize="24" HorizontalAlignment="Center"/>
 
                 <!--<Image Source="{StaticResource Bomb}" Width="100"/>-->
-                <ProgressBar Foreground="#DD0024"  Margin="3" MaxWidth="200" MaxHeight="20" Value="{Binding RoundProgress, Mode=OneWay}"/>
+                <ProgressBar Foreground="{DynamicResource HealthBarBrush}"
+                             Margin="3" MaxWidth="200" MaxHeight="20" Value="{Binding RoundProgress, Mode=OneWay}"/>
 
                 <TextBox
                          Margin="3" Width="200" 
