@@ -32,16 +32,16 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <Grid.RowDefinitions>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>-->
 
-        <Button Command="{Binding SwitchThemeCommand}" Margin="10 5 5 0" Padding="10" HorizontalAlignment="Left">
+        <!--<Button Command="{Binding SwitchThemeCommand}" Margin="10 5 5 0" Padding="10" HorizontalAlignment="Left">
             <Button.Content>
                 <fa5:ImageAwesome Icon="Regular_Lightbulb" Width="10" Foreground="Black"/>
             </Button.Content>
-        </Button>
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+        </Button>-->
+        <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
 </windows:BaseWindow>

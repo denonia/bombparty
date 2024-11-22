@@ -34,6 +34,7 @@ namespace BombParty
 
             services.GetRequiredService<INavigationService<LobbyViewModel>>().Navigate();
 
+            var themeService = services.GetRequiredService<IThemeService>();
             var gameService = services.GetRequiredService<IGameService>();
             var settingsStore = services.GetRequiredService<ISettingsStore>();
 
@@ -43,7 +44,7 @@ namespace BombParty
                 await gameService.UpdateSettings(settingsStore.Settings.PlayerSettings);
             });
 
-            var mainWindow = new MainWindow
+            var mainWindow = new MainWindow(themeService)
             {
                 DataContext = services.GetRequiredService<MainViewModel>()
             };

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using BombParty.Helpers;
+using BombParty.Services;
 
 namespace BombParty.Windows
 {
@@ -8,7 +9,7 @@ namespace BombParty.Windows
     /// </summary>
     public partial class MainWindow : BaseWindow
     {
-        public MainWindow()
+        public MainWindow(IThemeService themeService) : base(themeService)
         {
             InitializeComponent();
         }

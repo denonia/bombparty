@@ -27,6 +27,10 @@
     </ControlTemplate>
 
     <ControlTemplate TargetType="windows:BaseWindow" x:Key="WindowTemplate">
+        <ControlTemplate.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ControlTemplate.Resources>
+        
         <Border CornerRadius="16" Background="{DynamicResource BackgroundBrush}">
             <Border CornerRadius="16" BorderThickness="2" BorderBrush="{DynamicResource WindowBorderBrush}" >
                 
@@ -41,6 +45,9 @@
                         <Button x:Name="CloseButton" Template="{StaticResource HeaderButton}" Foreground="#FF5F57" Margin="0,0,8,0" />
                         <Button x:Name="MinimizeButton" Template="{StaticResource HeaderButton}" Foreground="#FDBB2F" Margin="0,0,8,0" />
                         <Button x:Name="ZoomButton" Template="{StaticResource HeaderButton}" Foreground="#74AE59" Margin="0,0,8,0" />
+                        <Button x:Name="SwitchThemeButton" 
+                                Visibility="{TemplateBinding ShowSwitchThemeButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Template="{StaticResource HeaderButton}" Foreground="#87CEFA" Margin="0,0,8,0" />
                     </StackPanel>
 
                     <ContentPresenter Grid.Row="1"/>
