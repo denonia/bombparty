@@ -29,6 +29,8 @@
     <Color x:Key="HealthBarColor">#DC143C</Color>
     <Color x:Key="GameBorderColor">#5E5E5E</Color>
     <Color x:Key="GameCurrentPlayerBackgroundColor">#3E3E3E</Color>
+    <Color x:Key="GameRightAnswerColor">#228B22</Color>
+    <Color x:Key="GameWrongAnswerColor">#DC143C</Color>
     <Color x:Key="AvatarBorderColor">#FFD700</Color>
     <Color x:Key="LobbyRoomBackgroundColor">#3E3E3E</Color>
     <Color x:Key="LobbyRoomBorderColor">#222222</Color>

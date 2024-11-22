@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0">
-            <Border BorderBrush="{StaticResource GameBorderBrush}" BorderThickness="0,0.5,0,0.5" Padding="10">
+            <Border BorderBrush="{StaticResource GameBorderBrush}" BorderThickness="0,0.5,0,0.5">
                 <ItemsControl ItemsSource="{Binding Players}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -41,8 +41,8 @@
                                     </Style>
                                 </Grid.Style>
                                 
-                                <controls:AnswerIndicator IsShown="{Binding IsRed}" Fill="Red" />
-                                <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="Green" />
+                                <controls:AnswerIndicator IsShown="{Binding IsRed}" Fill="{DynamicResource GameWrongAnswerBrush}" />
+                                <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="{DynamicResource GameRightAnswerBrush}" />
 
                                 <StackPanel Width="100" Margin="10">
                                     <Border BorderBrush="{DynamicResource AvatarBorderBrush}" BorderThickness="3" CornerRadius="12" Width="100" Height="100">
@@ -58,7 +58,6 @@
                                         <TextBlock Text="{Binding HealthPoints}" FontWeight="Medium" Foreground="{StaticResource HealthBarBrush}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <TextBlock Text="{Binding Input}" Margin="0 4 0 0" HorizontalAlignment="Center"/>
-                                    <!--<TextBlock Text="^^^^^^" Visibility="{Binding IsTurn, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center"/>-->
                                 </StackPanel>
                             </Grid>
                         </ItemContainerTemplate>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BombParty.Views" xmlns:sys="clr-namespace:System;assembly=netstandard"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Margin="10">
+    <StackPanel Margin="10" MaxWidth="600">
         <TextBlock Text="Settings" FontSize="32" FontWeight="Medium"/>
 
         <StackPanel>

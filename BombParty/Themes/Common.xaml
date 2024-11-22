@@ -26,6 +26,8 @@
     <SolidColorBrush x:Key="HealthBarBrush" Color="{StaticResource HealthBarColor}" />
     <SolidColorBrush x:Key="GameBorderBrush" Color="{StaticResource GameBorderColor}" />
     <SolidColorBrush x:Key="GameCurrentPlayerBackgroundBrush" Color="{StaticResource GameCurrentPlayerBackgroundColor}" />
+    <SolidColorBrush x:Key="GameRightAnswerBrush" Color="{StaticResource GameRightAnswerColor}" />
+    <SolidColorBrush x:Key="GameWrongAnswerBrush" Color="{StaticResource GameWrongAnswerColor}" />
     <SolidColorBrush x:Key="AvatarBorderBrush" Color="{StaticResource AvatarBorderColor}" />
     <SolidColorBrush x:Key="LobbyRoomBackgroundBrush" Color="{StaticResource LobbyRoomBackgroundColor}" />
     <SolidColorBrush x:Key="LobbyRoomBorderBrush" Color="{StaticResource LobbyRoomBorderColor}" />
