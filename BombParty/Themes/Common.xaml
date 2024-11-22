@@ -14,35 +14,65 @@
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource TextBoxBorderColor}" />
 
     <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
-        <Border x:Name="ButtonBorder"
-                TextBlock.Foreground="{TemplateBinding Foreground}"
-                BorderBrush="{StaticResource ButtonBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="14,8">
-
+        <Border Name="ButtonSelectBorder" BorderThickness="4" CornerRadius="8">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{StaticResource ActiveColor}" Opacity="0"/>
+            </Border.BorderBrush>
             <Border.Background>
-                <SolidColorBrush Color="{StaticResource ButtonBackgroundColor}"/>
+                <SolidColorBrush Color="{StaticResource ButtonBackgroundColor}" Opacity="0"/>
             </Border.Background>
-            
-            <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            <Border x:Name="ButtonBorder"
+                TextBlock.Foreground="{TemplateBinding Foreground}"
+                BorderThickness="1.5" CornerRadius="8" Padding="14,8">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource ButtonBorderColor}"/>
+                </Border.BorderBrush>
+                <Border.Background>
+                    <SolidColorBrush Color="{StaticResource ButtonBackgroundColor}"/>
+                </Border.Background>
+
+                <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
 
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal">
                         <Storyboard>
                             <ColorAnimation 
-                                            Storyboard.TargetName="ButtonBorder"
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                            To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
+                                        Storyboard.TargetName="ButtonBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <ColorAnimation 
-                                            Storyboard.TargetName="ButtonBorder"
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                            To="{StaticResource ButtonHoverColor}" Duration="0:0:0.2"/>
-
+                                        Storyboard.TargetName="ButtonBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource ButtonHoverColor}" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ButtonBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ButtonSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ButtonSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        BeginTime="0:0:0.05"
+                                        To="1" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unfocused"/>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
         </Border>
@@ -82,6 +112,10 @@
                     <VisualState x:Name="Normal">
                         <Storyboard>
                             <ColorAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource TextBoxBackgroundColor}" Duration="0:0:0.2"/>
+                            <ColorAnimation 
                                         Storyboard.TargetName="TextBoxBorder"
                                         Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                         To="{StaticResource TextBoxBackgroundColor}" Duration="0:0:0.2"/>
@@ -90,11 +124,17 @@
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <ColorAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource TextBoxHoverColor}" Duration="0:0:0.2"/>
+                            <ColorAnimation 
                                         Storyboard.TargetName="TextBoxBorder"
                                         Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                         To="{StaticResource TextBoxHoverColor}" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
                     <VisualState x:Name="Focused">
                         <Storyboard>
                             <DoubleAnimation 
@@ -111,6 +151,7 @@
                                         To="1" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
+                    <VisualState x:Name="Unfocused"/>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
         </Border>

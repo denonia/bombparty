@@ -37,38 +37,35 @@
             <Button Command="{Binding BackCommand}" Content="Back" Margin="12 0 0 0" Padding="12 0"/>
         </StackPanel>
 
-        <ScrollViewer>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" Margin="0 10 0 0" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" Margin="0 10 0 0" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Password (optional)" Margin="0 10 0 0" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password}" Margin="0 4" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Password (optional)" Margin="0 10 0 0" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password}" Margin="0 4" />
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Language" Margin="0 10 0 0" />
-                <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Dictionaries}" SelectedItem="{Binding Dictionary}" Margin="0 4"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Language" Margin="0 10 0 0" />
+            <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Dictionaries}" SelectedItem="{Binding Dictionary}" Margin="0 4"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Start health" Margin="0 10 0 0" />
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding StartHealthPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Start health" Margin="0 10 0 0" />
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding StartHealthPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Round time (seconds)" Margin="0 10 0 0" />
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding RoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Round time (seconds)" Margin="0 10 0 0" />
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding RoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="0 4" />
+        </Grid>
 
-                <Button Grid.Row="5" Command="{Binding SubmitCommand}" IsDefault="True" Content="Create" Margin="0 10 0 0" />
-            </Grid>
-        </ScrollViewer>
+        <Button Command="{Binding SubmitCommand}" MaxWidth="150" IsDefault="True" Content="Create" Margin="0 10 0 0" />
     </StackPanel>
 </UserControl>
