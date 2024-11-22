@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BombParty.Views" 
              xmlns:ext="clr-namespace:BombParty.Extensions" 
              xmlns:controls="clr-namespace:BombParty.Controls" 
-             xmlns:converters="clr-namespace:BombParty.Converters"
+             xmlns:converters="clr-namespace:BombParty.Converters" xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -31,16 +31,34 @@
                     <ItemsControl.ItemTemplate>
                         <ItemContainerTemplate>
                             <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTurn}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource GameCurrentPlayerBackgroundBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                
                                 <controls:AnswerIndicator IsShown="{Binding IsRed}" Fill="Red" />
                                 <controls:AnswerIndicator IsShown="{Binding IsGreen}" Fill="Green" />
 
                                 <StackPanel Width="100" Margin="10">
-                                    <ContentControl Content="{Binding Avatar}"/>
+                                    <Border BorderBrush="{DynamicResource AvatarBorderBrush}" BorderThickness="3" CornerRadius="12" Width="100" Height="100">
+                                        <Border.Background>
+                                            <ImageBrush Stretch="Fill" ImageSource="{Binding Avatar.FileName}"/>
+                                        </Border.Background>
+                                    </Border>
 
-                                    <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Input}" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding HealthPoints}" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="^^^^^^" Visibility="{Binding IsTurn, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontWeight="Medium" Text="{Binding DisplayName}" HorizontalAlignment="Center" Margin="0 6 0 0"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 4 0 0">
+                                        <fa5:ImageAwesome
+                                            Icon="Solid_Heart" Margin="6 0" Width="14" Foreground="{StaticResource HealthBarBrush}"/>
+                                        <TextBlock Text="{Binding HealthPoints}" FontWeight="Medium" Foreground="{StaticResource HealthBarBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Input}" Margin="0 4 0 0" HorizontalAlignment="Center"/>
+                                    <!--<TextBlock Text="^^^^^^" Visibility="{Binding IsTurn, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center"/>-->
                                 </StackPanel>
                             </Grid>
                         </ItemContainerTemplate>
@@ -49,14 +67,14 @@
             </Border>
 
             <StackPanel Margin="5">
-                <TextBlock Text="{Binding CurrentCombination}" FontSize="24" HorizontalAlignment="Center"/>
+                <TextBlock Margin="0 5" Text="{Binding CurrentCombination}" FontSize="24" HorizontalAlignment="Center"/>
 
                 <!--<Image Source="{StaticResource Bomb}" Width="100"/>-->
                 <ProgressBar Foreground="{DynamicResource HealthBarBrush}"
                              Margin="3" MaxWidth="200" MaxHeight="20" Value="{Binding RoundProgress, Mode=OneWay}"/>
 
                 <TextBox
-                         Margin="3" Width="200" 
+                         Margin="6" Width="200" 
                          IsEnabled="{Binding IsTurn}"
                          ext:FocusExtension.IsFocused="{Binding IsTurn}"
                          Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}">
@@ -64,7 +82,7 @@
                         <KeyBinding Command="{Binding SubmitAnswerCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" HorizontalAlignment="Center" Margin="0 5"/>
+                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" HorizontalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
 
@@ -75,7 +93,7 @@
                 
                 <controls:ChatTextBox Text="{Binding ChatHistory}" Height="200" />
 
-                <TextBox Width="200" Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 10">
+                <TextBox Width="200" Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 6">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter" />
                     </TextBox.InputBindings>

@@ -5,20 +5,9 @@
              xmlns:common="clr-namespace:BombParty.Common;assembly=BombParty.Common">
     <Application.Resources>
         <ResourceDictionary>
-            <BitmapImage x:Key="Avatar" UriSource="Images\goofy.png" />
-            <BitmapImage x:Key="Bomb" UriSource="Images\bomb.png" />
-
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant"/>
             </Style>
-
-            <DataTemplate DataType="{x:Type common:Avatar}">
-                <Image Width="100">
-                    <Image.Source>
-                        <BitmapImage UriSource="{Binding FileName}"/>
-                    </Image.Source>
-                </Image>
-            </DataTemplate>
 
             <FontFamily x:Key="Roboto">Resources\Fonts\#Roboto</FontFamily>
         </ResourceDictionary>

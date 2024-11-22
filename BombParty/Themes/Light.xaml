@@ -28,6 +28,8 @@
 
     <Color x:Key="HealthBarColor">#DC143C</Color>
     <Color x:Key="GameBorderColor">#5E5E5E</Color>
+    <Color x:Key="GameCurrentPlayerBackgroundColor">#D3D3D3</Color>
+    <Color x:Key="AvatarBorderColor">#4682B4</Color>
     <Color x:Key="LobbyRoomBackgroundColor">#FFFFFF</Color>
     <Color x:Key="LobbyRoomBorderColor">#D3D3D3</Color>
 

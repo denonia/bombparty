@@ -20,6 +20,16 @@
                         <WrapPanel/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="12" Width="100" Height="100">
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill" ImageSource="{Binding FileName}"/>
+                            </Border.Background>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
 
             <Button Command="{Binding SubmitCommand}" IsDefault="True" Content="OK" Width="80" Margin="0 10 0 0" />
