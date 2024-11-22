@@ -56,6 +56,13 @@ namespace BombParty.Services
         {
             _resources.MergedDictionaries.Clear();
 
+            var themeDictionary = new ResourceDictionary
+            {
+                Source = themeUri
+            };
+
+            _resources.MergedDictionaries.Add(themeDictionary);
+
             foreach (var uri in CommonThemeUris)
             {
                 var dictionary = new ResourceDictionary
@@ -65,13 +72,6 @@ namespace BombParty.Services
 
                 _resources.MergedDictionaries.Add(dictionary);
             }
-
-            var themeDictionary = new ResourceDictionary
-            {
-                Source = themeUri
-            };
-
-            _resources.MergedDictionaries.Add(themeDictionary);
         }
     }
 }

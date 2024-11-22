@@ -5,4 +5,9 @@
     <Color x:Key="WindowBorderColor">#3C3C3C</Color>
     <Color x:Key="ForegroundColor">#FFFFFF</Color>
 
+    <Color x:Key="ButtonBackgroundColor">#444444</Color>
+    <Color x:Key="ButtonBorderColor">#2F2F32</Color>
+    <Color x:Key="ButtonHoverColor">#5E5E5E</Color>
+    <Color x:Key="ButtonPressColor">#326BD7</Color>
+
 </ResourceDictionary>

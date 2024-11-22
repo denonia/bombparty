@@ -2,7 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="BackgroundColor">#FFFFFF</Color>
-    <!--<Color x:Key="WindowBorderColor">#FFFFFF</Color>-->
+    <Color x:Key="WindowBorderColor">#D0D0D0</Color>
     <Color x:Key="ForegroundColor">#1E1E1E</Color>
+
+    <Color x:Key="ButtonBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="ButtonBorderColor">#D5D5D5</Color>
+    <Color x:Key="ButtonHoverColor">#E5E5E5</Color>
+    <Color x:Key="ButtonPressColor">#326BD7</Color>
 
 </ResourceDictionary>

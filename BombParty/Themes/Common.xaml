@@ -2,8 +2,65 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:converters="clr-namespace:BombParty.Converters">
 
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}" Opacity="0.85" />
-    <SolidColorBrush x:Key="WindowBorderBrush" Color="{DynamicResource WindowBorderColor}" Opacity="0.85" />
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}" />
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" Opacity="0.95" />
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" Opacity="0.85" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
 
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ButtonBorderColor}" />
+    <SolidColorBrush x:Key="ButtonPressBrush" Color="{StaticResource ButtonPressColor}" />
+
+    <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
+        <Border x:Name="ButtonBorder"
+                BorderBrush="{StaticResource ButtonBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="14,8"
+                TextBlock.Foreground="{StaticResource ForegroundBrush}">
+
+            <Border.Background>
+                <SolidColorBrush Color="{StaticResource ButtonBackgroundColor}"/>
+            </Border.Background>
+            
+            <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+
+        <ControlTemplate.Resources>
+            <converters:BrushDarkenConverter x:Key="BrushDarkenConverter"/>
+        </ControlTemplate.Resources>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation 
+                                            Storyboard.TargetName="ButtonBorder"
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource ButtonHoverColor}" Duration="0:0:0.2"/>
+
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation 
+                                            Storyboard.TargetName="ButtonBorder"
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="ButtonBorder" Property="Background" 
+                        Value="{StaticResource ButtonPressBrush}" />
+                <Setter TargetName="ButtonBorder" Property="TextBlock.Foreground" 
+                        Value="White" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="Button">
+        <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
+    </Style>
 </ResourceDictionary>

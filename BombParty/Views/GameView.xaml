@@ -63,7 +63,7 @@
                         <KeyBinding Command="{Binding SubmitAnswerCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" Width="60" Margin="0 5"/>
+                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" HorizontalAlignment="Center" Margin="0 5"/>
             </StackPanel>
         </StackPanel>
 
@@ -79,7 +79,7 @@
                         <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Content="Send" Command="{Binding SendChatMessageCommand}" Width="60" />
+                <Button Content="Send" Command="{Binding SendChatMessageCommand}" HorizontalAlignment="Center" />
             </StackPanel>
         </Border>
     </Grid>
