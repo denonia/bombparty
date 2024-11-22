@@ -14,4 +14,10 @@
     <Color x:Key="TextBoxBorderColor">#D3D3D3</Color>
     <Color x:Key="TextBoxHoverColor">#F0F0F0</Color>
 
+    <Color x:Key="ComboBoxBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="ComboBoxBorderColor">#D3D3D3</Color>
+    <Color x:Key="ComboBoxHoverColor">#F0F0F0</Color>
+    <Color x:Key="ToggleButtonColor">#326BD7</Color>
+    <Color x:Key="ToggleButtonHoverColor">#1E407F</Color>
+
 </ResourceDictionary>

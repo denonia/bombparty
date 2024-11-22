@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                    xmlns:converters="clr-namespace:BombParty.Converters">
+                    xmlns:converters="clr-namespace:BombParty.Converters" xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" Opacity="0.95" />
     <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" Opacity="0.85" />
@@ -12,6 +12,9 @@
 
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackgroundColor}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource TextBoxBorderColor}" />
+
+    <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource ComboBoxBackgroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource ComboBoxBorderColor}" />
 
     <ControlTemplate TargetType="Button" x:Key="ButtonTemplate">
         <Border Name="ButtonSelectBorder" BorderThickness="4" CornerRadius="8">
@@ -157,6 +160,164 @@
         </Border>
     </ControlTemplate>
 
+    <ControlTemplate TargetType="TextBox" x:Key="ComboBoxTextBox">
+        <Border x:Name="PART_ContentHost"
+          Focusable="False"
+          Background="{TemplateBinding Background}" />
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="ToggleButton" x:Key="ToggleButtonTemplate">
+        <Border x:Name="ToggleButtonBorder"
+            TextBlock.Foreground="{TemplateBinding Foreground}"
+            BorderThickness="1.5" CornerRadius="8" Padding="2">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{StaticResource ButtonBorderColor}"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{StaticResource ActiveColor}"/>
+            </Border.Background>
+
+            <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <ColorAnimation 
+                                        Storyboard.TargetName="ToggleButtonBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource ToggleButtonColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <ColorAnimation 
+                                        Storyboard.TargetName="ToggleButtonBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        To="{StaticResource ToggleButtonHoverColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="ComboBoxItem" x:Key="ComboBoxItemTemplate">
+        <Border x:Name="ComboBoxItemBorder"
+                Margin="1 0"
+                Padding="8 2"
+                SnapsToDevicePixels="true"
+                Background="Transparent">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="FocusStates">
+                    <VisualState x:Name="Unfocused"/>
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="ComboBoxItemBorder"
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource ActiveColor}" Duration="0:0:0"/>
+                            <ColorAnimation Storyboard.TargetName="ComboBoxItemBorder"
+                                            Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                            To="White" Duration="0:0:0"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <ContentPresenter />
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="ComboBox" x:Key="ComboBoxTemplate">
+        <Border Name="ComboBoxSelectBorder" BorderThickness="4" CornerRadius="8">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{StaticResource ActiveColor}" Opacity="0"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{StaticResource ComboBoxBackgroundColor}" Opacity="0"/>
+            </Border.Background>
+
+            <Border Name="ComboBoxBorder"
+                BorderBrush="{StaticResource ComboBoxBorderBrush}" BorderThickness="1.5" CornerRadius="8" Padding="4">
+                <Border.Background>
+                    <SolidColorBrush Color="{StaticResource ComboBoxBackgroundColor}"/>
+                </Border.Background>
+
+                <Grid>
+                    <ContentPresenter x:Name="ContentSite"
+                                        Margin="10 0 0 0"
+                                        IsHitTestVisible="False"
+                                        Content="{TemplateBinding SelectionBoxItem}"
+                                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left">
+                    </ContentPresenter>
+
+                    <ToggleButton Template="{StaticResource ToggleButtonTemplate}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Focusable="false"
+                            ClickMode="Press"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <fa5:ImageAwesome Margin="6"
+                            Icon="Solid_ArrowsAltV" Width="6" Foreground="White"/>
+                    </ToggleButton>
+
+                    <Popup x:Name="Popup"
+                         Placement="Bottom"
+                         PlacementTarget="{Binding ElementName=ComboBoxSelectBorder}"
+                         IsOpen="{TemplateBinding IsDropDownOpen}"
+                         AllowsTransparency="True"
+                         Focusable="False"
+                         PopupAnimation="Slide">
+                        <Grid x:Name="DropDown"
+                              SnapsToDevicePixels="True"
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                              >
+                            <Border x:Name="DropDownBorder" BorderThickness="2" CornerRadius="8">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{StaticResource ComboBoxBorderColor}" />
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <SolidColorBrush Color="{StaticResource ComboBoxBackgroundColor}" />
+                                </Border.Background>
+                            </Border>
+
+                            <ScrollViewer SnapsToDevicePixels="True" Padding="0 10">
+                                <StackPanel IsItemsHost="True"
+                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                            </ScrollViewer>
+                        </Grid>
+                    </Popup>
+                </Grid>
+            </Border>
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="FocusStates">
+                    <VisualState x:Name="Unfocused"/>
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ComboBoxBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ComboBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ComboBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        BeginTime="0:0:0.05"
+                                        To="1" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+
     <Style TargetType="Button">
         <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
@@ -164,6 +325,16 @@
 
     <Style TargetType="TextBox">
         <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Template" Value="{StaticResource ComboBoxItemTemplate}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
     </Style>
 </ResourceDictionary>
