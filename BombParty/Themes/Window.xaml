@@ -30,30 +30,41 @@
         <ControlTemplate.Resources>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ControlTemplate.Resources>
-        
-        <Border CornerRadius="16" Background="{DynamicResource BackgroundBrush}">
-            <Border CornerRadius="16" BorderThickness="2" BorderBrush="{DynamicResource WindowBorderBrush}" >
-                
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
 
-                    <StackPanel x:Name="TitlePanel" Orientation="Horizontal"
-                                Margin="15,0,0,0" Background="Transparent">
-                        <Button x:Name="CloseButton" Template="{StaticResource HeaderButton}" Foreground="#FF5F57" Margin="0,0,8,0" />
-                        <Button x:Name="MinimizeButton" Template="{StaticResource HeaderButton}" Foreground="#FDBB2F" Margin="0,0,8,0" />
-                        <Button x:Name="ZoomButton" Template="{StaticResource HeaderButton}" Foreground="#74AE59" Margin="0,0,8,0" />
-                        <Button x:Name="SwitchThemeButton" 
-                                Visibility="{TemplateBinding ShowSwitchThemeButton, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Template="{StaticResource HeaderButton}" Foreground="#87CEFA" Margin="0,0,8,0" />
-                    </StackPanel>
+        <Grid>
+            <Border CornerRadius="16" Background="{DynamicResource BackgroundBrush}">
+                <Border CornerRadius="16" BorderThickness="2" BorderBrush="{DynamicResource WindowBorderBrush}" >
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                    <ContentPresenter Grid.Row="1"/>
-                </Grid>
+                        <StackPanel x:Name="TitlePanel" Orientation="Horizontal"
+                                    Margin="15,0,0,0" Background="Transparent">
+                            <Button x:Name="CloseButton" Template="{StaticResource HeaderButton}" Foreground="#FF5F57" Margin="0,0,8,0" />
+                            <Button x:Name="MinimizeButton" Template="{StaticResource HeaderButton}" Foreground="#FDBB2F" Margin="0,0,8,0" />
+                            <Button x:Name="ZoomButton" Template="{StaticResource HeaderButton}" Foreground="#74AE59" Margin="0,0,8,0" />
+                            <Button x:Name="SwitchThemeButton" 
+                                    Visibility="{TemplateBinding ShowSwitchThemeButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Template="{StaticResource HeaderButton}" Foreground="#87CEFA" Margin="0,0,8,0" />
+                        </StackPanel>
+
+                        <ContentPresenter Grid.Row="1"/>
+                    </Grid>
+                </Border>
             </Border>
-        </Border>
+
+            <Rectangle x:Name="ResizeN" Fill="Transparent" VerticalAlignment="Top"
+                       Height="4" Margin="9,-2,9,0"  />
+            <Rectangle x:Name="ResizeE" Fill="Transparent" HorizontalAlignment="Right"
+                       Width="4" Margin="0,9,-2,9"  />
+            <Rectangle x:Name="ResizeS" Fill="Transparent" VerticalAlignment="Bottom"
+                       Height="4" Margin="9,0,9,-2"  />
+            <Rectangle x:Name="ResizeW" Fill="Transparent" HorizontalAlignment="Left"
+                       Width="4" Margin="-2,9,0,9"  />
+        </Grid>
     </ControlTemplate>
 
     <Style TargetType="windows:BaseWindow" x:Key="WindowStyle">
