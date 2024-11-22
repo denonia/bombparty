@@ -21,8 +21,20 @@
             <StackPanel>
                 <TextBlock Text="Active rooms" FontSize="32" FontWeight="Medium" Margin="10"/>
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding CreateRoomCommand}" Content="Create room" Margin="4" />
-                    <Button Command="{Binding SettingsCommand}" Content="Settings" Margin="4" />
+                    <Button Command="{Binding CreateRoomCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa5:ImageAwesome Margin="0 0 8 0"
+                                    Icon="Solid_Plus" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                            <TextBlock>Create room</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SettingsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa5:ImageAwesome Margin="0 0 8 0"
+                                    Icon="Solid_Cog" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                            <TextBlock>Settings</TextBlock>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
 

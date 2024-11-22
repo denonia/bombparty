@@ -97,14 +97,25 @@
                         <KeyBinding Command="{Binding SubmitAnswerCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Content="Submit" Command="{Binding SubmitAnswerCommand}" HorizontalAlignment="Center"/>
+                <Button Command="{Binding SubmitAnswerCommand}" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Margin="0 0 8 0"
+                                Icon="Solid_Check" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock>Submit</TextBlock>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </StackPanel>
 
         <Border Grid.Column="1" BorderBrush="{StaticResource GameBorderBrush}" BorderThickness="0.5,0.5,0,0" Padding="10">
             <StackPanel>
-
-                <Button Content="Leave game" Command="{Binding LeaveRoomCommand}" HorizontalAlignment="Left" Margin="0 0 0 10" Padding="14 2" />
+                <Button Command="{Binding LeaveRoomCommand}" HorizontalAlignment="Left" Margin="0 0 0 10" Padding="14 2">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Margin="0 0 8 0"
+                                Icon="Solid_SignOutAlt" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock>Leave game</TextBlock>
+                    </StackPanel>
+                </Button>
                 
                 <controls:ChatTextBox Text="{Binding ChatHistory}" Height="200" Focusable="False" />
 
@@ -113,7 +124,13 @@
                         <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Content="Send" Command="{Binding SendChatMessageCommand}" HorizontalAlignment="Center" />
+                <Button Command="{Binding SendChatMessageCommand}" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Margin="0 0 8 0"
+                                Icon="Solid_PaperPlane" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock>Send</TextBlock>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>

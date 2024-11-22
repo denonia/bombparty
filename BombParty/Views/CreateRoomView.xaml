@@ -69,8 +69,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Command="{Binding SubmitCommand}" MaxWidth="140" IsDefault="True" Content="Create" />
-            <Button Grid.Column="1" Command="{Binding BackCommand}" MaxWidth="140" Content="Cancel"/>
+            <Button Grid.Column="0" Command="{Binding SubmitCommand}" MaxWidth="140" IsDefault="True">
+                <StackPanel Orientation="Horizontal">
+                    <fa5:ImageAwesome Margin="0 0 8 0"
+                            Icon="Solid_Check" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                    <TextBlock>Create</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="1" Command="{Binding BackCommand}" MaxWidth="140">
+                <StackPanel Orientation="Horizontal">
+                    <fa5:ImageAwesome Margin="0 0 8 0"
+                            Icon="Solid_Times" Width="14" Foreground="{DynamicResource ForegroundBrush}"/>
+                    <TextBlock>Cancel</TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
     </StackPanel>
 </UserControl>
