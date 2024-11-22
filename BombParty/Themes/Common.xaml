@@ -14,6 +14,7 @@
 
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackgroundColor}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource TextBoxBorderColor}" />
+    <SolidColorBrush x:Key="TextBoxCaretBrush" Color="{StaticResource TextBoxCaretColor}" />
 
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource ComboBoxBackgroundColor}" />
     <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource ComboBoxBorderColor}" />
@@ -442,6 +443,7 @@
 
     <Style TargetType="TextBox">
         <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource TextBoxCaretBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
     </Style>
 
