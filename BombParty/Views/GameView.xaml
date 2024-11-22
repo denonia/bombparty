@@ -21,7 +21,7 @@
 
         <StackPanel Grid.Column="0">
             <Border BorderBrush="{StaticResource GameBorderBrush}" BorderThickness="0,0.5,0,0.5">
-                <ItemsControl ItemsSource="{Binding Players}">
+                <ItemsControl ItemsSource="{Binding Players}" Focusable="False">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -90,7 +90,7 @@
 
                 <Button Content="Leave game" Command="{Binding LeaveRoomCommand}" HorizontalAlignment="Left" Margin="0 0 0 10" Padding="14 2" />
                 
-                <controls:ChatTextBox Text="{Binding ChatHistory}" Height="200" />
+                <controls:ChatTextBox Text="{Binding ChatHistory}" Height="200" Focusable="False" />
 
                 <TextBox Width="200" Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 6">
                     <TextBox.InputBindings>

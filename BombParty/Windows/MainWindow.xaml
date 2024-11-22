@@ -42,6 +42,6 @@
                 <fa5:ImageAwesome Icon="Regular_Lightbulb" Width="10" Foreground="Black"/>
             </Button.Content>
         </Button>-->
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <ContentControl Content="{Binding CurrentViewModel}" Focusable="False"/>
     </Grid>
 </windows:BaseWindow>

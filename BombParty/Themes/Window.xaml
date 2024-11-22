@@ -43,15 +43,15 @@
 
                         <StackPanel x:Name="TitlePanel" Orientation="Horizontal"
                                     Margin="15,0,0,0" Background="Transparent">
-                            <Button x:Name="CloseButton" Template="{StaticResource HeaderButton}" Foreground="#FF5F57" Margin="0,0,8,0" />
-                            <Button x:Name="MinimizeButton" Template="{StaticResource HeaderButton}" Foreground="#FDBB2F" Margin="0,0,8,0" />
-                            <Button x:Name="ZoomButton" Template="{StaticResource HeaderButton}" Foreground="#74AE59" Margin="0,0,8,0" />
+                            <Button x:Name="CloseButton" Template="{StaticResource HeaderButton}" Foreground="#FF5F57" Margin="0,0,8,0" Focusable="False" />
+                            <Button x:Name="MinimizeButton" Template="{StaticResource HeaderButton}" Foreground="#FDBB2F" Margin="0,0,8,0" Focusable="False" />
+                            <Button x:Name="ZoomButton" Template="{StaticResource HeaderButton}" Foreground="#74AE59" Margin="0,0,8,0" Focusable="False" />
                             <Button x:Name="SwitchThemeButton" 
                                     Visibility="{TemplateBinding ShowSwitchThemeButton, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Template="{StaticResource HeaderButton}" Foreground="#87CEFA" Margin="0,0,8,0" />
+                                    Template="{StaticResource HeaderButton}" Foreground="#87CEFA" Margin="0,0,8,0" Focusable="False" />
                         </StackPanel>
 
-                        <ContentPresenter Grid.Row="1"/>
+                        <ContentPresenter Grid.Row="1" />
                     </Grid>
                 </Border>
             </Border>
