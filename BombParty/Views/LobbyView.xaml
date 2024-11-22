@@ -13,7 +13,7 @@
         </StackPanel.Resources>
         
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Active rooms" FontSize="24" Margin="10"/>
+            <TextBlock Text="Active rooms" FontSize="32" FontWeight="Medium" Margin="10"/>
             <Button Command="{Binding CreateRoomCommand}" Content="Create room" Margin="4" />
             <Button Command="{Binding SettingsCommand}" Content="Settings" Margin="4" />
         </StackPanel>
