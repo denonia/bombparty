@@ -14,6 +14,7 @@
 
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackgroundColor}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource TextBoxBorderColor}" />
+    <SolidColorBrush x:Key="TextBoxErrorBorderBrush" Color="{StaticResource TextBoxErrorBorderColor}" />
     <SolidColorBrush x:Key="TextBoxCaretBrush" Color="{StaticResource TextBoxCaretColor}" />
 
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource ComboBoxBackgroundColor}" />
@@ -63,6 +64,10 @@
                                         Storyboard.TargetName="ButtonBorder"
                                         Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                         To="{StaticResource ButtonBackgroundColor}" Duration="0:0:0.2"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ButtonBorder"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="1" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="MouseOver">
@@ -71,6 +76,14 @@
                                         Storyboard.TargetName="ButtonBorder"
                                         Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                         To="{StaticResource ButtonHoverColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="ButtonBorder"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="0.5" Duration="0:0:0.2"/>
                         </Storyboard>
                     </VisualState>
                 </VisualStateGroup>
@@ -175,6 +188,55 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
         </Border>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0.2"/>
+                            <ColorAnimation
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                        To="{StaticResource TextBoxErrorBorderColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="1" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0"/>
+                            <DoubleAnimation 
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Opacity)"
+                                        To="0" Duration="0:0:0.2"/>
+                            <ColorAnimation
+                                        Storyboard.TargetName="TextBoxSelectBorder"
+                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                        To="{StaticResource ActiveColor}" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <ControlTemplate TargetType="TextBox" x:Key="ComboBoxTextBox">
